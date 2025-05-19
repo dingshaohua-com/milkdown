@@ -1,0 +1,5 @@
+packages:
+  - 'apps/*' # 应用
+  - 'packages/*' # 其它
+  # - 'libs/*' # 工具
+# link-workspace-packages: true

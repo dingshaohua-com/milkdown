@@ -1,0 +1,18 @@
+{
+  "name": "@repo/milkdown-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "@milkdown/crepe": "^7.10.5",
+    "@milkdown/kit": "^7.10.5",
+    "@milkdown/react": "^7.10.5"
+  }
+}
