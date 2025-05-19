@@ -13,6 +13,7 @@
   "dependencies": {
     "@milkdown/crepe": "^7.10.5",
     "@milkdown/kit": "^7.10.5",
+    "@milkdown/plugin-listener": "^7.10.5",
     "@milkdown/react": "^7.10.5"
   }
 }

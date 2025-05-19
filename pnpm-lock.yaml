@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@milkdown/plugin-listener':
+    hash: 9c4407f76be87a1933b6a1c04320030b524e70f1717a1f98d67f69a1a9a9e697
+    path: patches/@milkdown__plugin-listener.patch
+
 importers:
 
   .:
@@ -78,6 +83,9 @@ importers:
       '@milkdown/kit':
         specifier: ^7.10.5
         version: 7.10.5(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.8)(typescript@5.8.3)
+      '@milkdown/plugin-listener':
+        specifier: ^7.10.5
+        version: 7.10.5(patch_hash=9c4407f76be87a1933b6a1c04320030b524e70f1717a1f98d67f69a1a9a9e697)
       '@milkdown/react':
         specifier: ^7.10.5
         version: 7.10.5(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.8)(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -2551,7 +2559,7 @@ snapshots:
       '@milkdown/plugin-cursor': 7.10.5
       '@milkdown/plugin-history': 7.10.5
       '@milkdown/plugin-indent': 7.10.5
-      '@milkdown/plugin-listener': 7.10.5
+      '@milkdown/plugin-listener': 7.10.5(patch_hash=9c4407f76be87a1933b6a1c04320030b524e70f1717a1f98d67f69a1a9a9e697)
       '@milkdown/plugin-slash': 7.10.5
       '@milkdown/plugin-tooltip': 7.10.5
       '@milkdown/plugin-trailing': 7.10.5
@@ -2623,7 +2631,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@milkdown/plugin-listener@7.10.5':
+  '@milkdown/plugin-listener@7.10.5(patch_hash=9c4407f76be87a1933b6a1c04320030b524e70f1717a1f98d67f69a1a9a9e697)':
     dependencies:
       '@milkdown/core': 7.10.5
       '@milkdown/ctx': 7.10.5
