@@ -14,6 +14,12 @@
     "@milkdown/crepe": "^7.10.5",
     "@milkdown/kit": "^7.10.5",
     "@milkdown/plugin-listener": "^7.10.5",
-    "@milkdown/react": "^7.10.5"
+    "@milkdown/react": "^7.10.5",
+    "@remixicon/react": "^4.6.0",
+    "antd": "^5.25.2",
+    "mitt": "^3.0.1"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.89.0"
   }
 }

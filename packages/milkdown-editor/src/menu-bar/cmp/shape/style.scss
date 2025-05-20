@@ -1,0 +1,24 @@
+.shap {
+  button {
+    height: auto;
+    margin: 0 1px;
+    padding: 0px 6px;
+    border-radius: 2px;
+    svg {
+      width: 16px;
+    }
+  }
+
+}
+.shapItems {
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -10px;
+  .shapItem {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+}
+
