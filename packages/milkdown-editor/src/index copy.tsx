@@ -1,5 +1,5 @@
 import './style.scss';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import MenuBar from './menu-bar';
 import emitter from './utils/emitter';
 import { Crepe } from '@milkdown/crepe';
@@ -9,7 +9,6 @@ import { replaceAll } from '@milkdown/kit/utils';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 
 const CrepeEditor: React.FC<{ defaultValue: string }> = ({ defaultValue }) => {
-  const editorRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState(defaultValue || 'Hello, Milkdown!');
   const { get } = useEditor((root) => {
     const crepe = new Crepe({ root, defaultValue: content });
@@ -18,11 +17,7 @@ const CrepeEditor: React.FC<{ defaultValue: string }> = ({ defaultValue }) => {
         emitter.emit('selectionUpdated', { ctx, selection, prevSelection });
       });
       listener.markdownUpdated((ctx, markdown) => {
-        if(markdown !== content){
-          setContent(markdown);
-          editorRef.current?.focus();
-        }
-        
+        setContent(markdown);
       });
     });
     return crepe;
@@ -38,7 +33,7 @@ const CrepeEditor: React.FC<{ defaultValue: string }> = ({ defaultValue }) => {
       <MenuBar editor={editor} />
       <div className="milkdown-editor-content">
         <Milkdown />
-        <div ref={editorRef} contentEditable={true} onInput={(e) => onContentChange(e)} dangerouslySetInnerHTML={{ __html: content }}>
+        <div contentEditable={true} onInput={(e) => onContentChange(e)} dangerouslySetInnerHTML={{ __html: content }}>
         </div>
       </div>
     </div>
