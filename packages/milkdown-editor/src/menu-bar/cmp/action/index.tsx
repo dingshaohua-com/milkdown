@@ -1,37 +1,32 @@
 import { Button, Tooltip } from 'antd';
-import { RiSave3Line } from '@remixicon/react';
+import { RiMarkdownLine, RiSave3Line } from '@remixicon/react';
 
 const buttonGroup: Array<any> = [
   {
-    value: 'lineSolid',
-    label: 'LineSolid',
+    id: 'md',
+    icon: RiMarkdownLine,
+    action: () => {
+      
+    },
+    tooltip: 'MD模式',
+  },
+  {
+    id: 'save',
     icon: RiSave3Line,
-    style: { width: 20 },
-    action: (editor, handlers) => {
-      if(!handlers.onSave){return false};
-      let html = editor.getHTML();
-      const json = editor.getJSON();
-      // 清除空段落
-      if(json.content.length === 1 ){
-        const firstNode = json.content[0];
-        if(firstNode.type === 'paragraph' && !firstNode.content){
-          delete json.content;
-          html = '';
-        }
-      }
-      handlers.onSave({html, json});
+    action: () => {
+      
     },
     tooltip: '保存',
   },
 ];
 
-const FontStyle = ({ editor, handlers }) => {
+const FontStyle = () => {
   return (
-    <div className="fontStyle">
-      {buttonGroup.map(({ icon: Icon, tooltip, action, value, style }) => (
-        <Tooltip title={tooltip} key={value}>
+    <div className="itemsStyle">
+      {buttonGroup.map(({ icon: Icon, tooltip, action,id, style }) => (
+        <Tooltip title={tooltip} key={id}>
           <Button
-            onClick={() => action(editor, handlers)}
+            onClick={() => action()}
             color="default"
             variant="filled"
             autoInsertSpace
