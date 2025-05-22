@@ -8,7 +8,7 @@ import '@milkdown/crepe/theme/frame.css'; // 一个完整主题（可选，其�
 import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 
