@@ -1,5 +1,5 @@
 packages:
   - apps/*
   - packages/*
-patchedDependencies:
-  '@milkdown/plugin-listener': patches/@milkdown__plugin-listener.patch
+onlyBuiltDependencies:
+  - esbuild

@@ -1,4 +1,20 @@
 .milkdown-editor {
+
+  .itemsStyle {
+    display: flex;
+    align-items: center;
+    & > * {
+      height: 26px;
+      margin: 0 1px;
+      padding: 0px 6px;
+      border-radius: 2px;
+      svg,
+      img {
+        width: 16px;
+        height: 26px;
+      }
+    }
+  }
     display: flex;
     flex-direction: column;
     height: 100%;

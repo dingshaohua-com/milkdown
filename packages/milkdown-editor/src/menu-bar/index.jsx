@@ -9,8 +9,10 @@ import FontStyle from './cmp/font-style';
 // import ImgUpload from './cmp/img-upload';
 // import AlignStyle from './cmp/align-style';
 // import InsertSome from './cmp/insert-some';
+import { useEditorConfig } from '../config-ctx';
 
-const MenuBar = ({ editor, handlers, uploadFileConfig }) => {
+const MenuBar = () => {
+  const config = useEditorConfig();
   // if (!editor) {
   //   return null;
   // }
@@ -19,7 +21,7 @@ const MenuBar = ({ editor, handlers, uploadFileConfig }) => {
     <div className="menuBar">
       {/* <Heading editor={editor} />
       <Divider type="vertical" className="menuBarDivider" /> */}
-      <FontStyle editor={editor} />
+      <FontStyle />
       {/* <Divider type="vertical" className="menuBarDivider" />
       <InsertSome editor={editor} />
       <Divider type="vertical" className="menuBarDivider" />
