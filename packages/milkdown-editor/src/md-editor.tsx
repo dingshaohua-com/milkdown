@@ -7,13 +7,12 @@ interface MdEditorProps {
 
 const MdEditor: React.FC<MdEditorProps> = ({ content, onChange, setIsMdEditorFocused }) => {
   const onBlur = () => {
-    console.log(111);
-    
     setIsMdEditorFocused(false);
   }
   const onFocus = () => {
     setIsMdEditorFocused(true);
   }
+  
   return (
     <div className="md-editor">
       <Editor

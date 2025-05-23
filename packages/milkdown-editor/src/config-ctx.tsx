@@ -4,6 +4,7 @@ import { EditorDefaultConfig, EditorConfig } from '../global';
 const editorDefaultConfig: EditorDefaultConfig = {
   clickToEdit: false,
   imgBaseUrl: '',
+  mdMode: false,
 };
 const EditorDefaultConfigContext = createContext<EditorDefaultConfig>(editorDefaultConfig);
 export const useEditorDefaultConfig = () => useContext(EditorDefaultConfigContext);

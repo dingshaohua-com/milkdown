@@ -8,12 +8,14 @@ const buttonGroup: Array<any> = [
   {
     id: 'md',
     icon: RiMarkdownLine,
-    action: (editor: Editor, config: EditorConfig) => {},
+    isActive: (config: EditorConfig) => config.mdMode,
+    action: (config: EditorConfig) =>  config.setMdMode(!config.mdMode),
     tooltip: 'MD模式',
   },
   {
     id: 'save',
     icon: RiSave3Line,
+    isActive:()=>false,
     action: (editor: Editor, config: EditorConfig) => {
       editor.action((ctx) => {
         const editorView = ctx.get(editorViewCtx);
@@ -37,10 +39,10 @@ const Action = () => {
 
   return (
     <div className="group">
-      {buttonGroup.map(({ icon: Icon, tooltip, action, id, style }) => (
+      {buttonGroup.map(({ icon: Icon, tooltip, action, id, style, isActive }) => (
         <Tooltip title={tooltip} key={id}>
-          <Button onClick={() => action(editor, config)} color="default" variant="filled" autoInsertSpace>
-            <Icon style={style} />
+          <Button onClick={() => action(config)} color="default" variant={isActive(config) ? 'solid' : 'filled'} autoInsertSpace>
+            <Icon style={style} /> {}
           </Button>
         </Tooltip>
       ))}

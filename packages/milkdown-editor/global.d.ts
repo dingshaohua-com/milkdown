@@ -16,12 +16,13 @@ declare module 'react' {
 
 // 编辑器默认配置
 declare interface EditorDefaultConfig {
+  placeholder?: string;
+  clickToEdit?: boolean;
+  content?: string;
+  mdMode?: boolean;
   imgBaseUrl?: string;
   imageUploadHandler?: (file: File) => Promise<string>;
   onImageUpload?: ({ file, base64, url, id }: { file: File; base64: string; url: string; id: string }) => void;
-  placeholder?: string;
-  clickToEdit?: boolean;
-  defaultValue?: string;
 }
 
 // 编辑器配置
@@ -31,6 +32,7 @@ type EditorConfig = {
   editor?: Editor;
   onBlur?: (arg: any) => void;
   onFocus?: (arg: any) => void;
+  onChange?: (arg: string) => void;
   [str: string]: any;
 } & EditorDefaultConfig;
 
