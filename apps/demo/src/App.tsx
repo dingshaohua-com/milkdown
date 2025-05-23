@@ -2,11 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import MilkdownEditor from '@repo/milkdown-editor';
 
-const contentTemp = `
-# 你好，这是一段文本111
-## 你好，这是一段文本222
-### 你好，这是一段文本333
-`;
+const contentTemp = `呵呵`;
 
 function App() {
   // const [count, setCount] = useState(0);
