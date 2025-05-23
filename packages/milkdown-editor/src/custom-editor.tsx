@@ -16,14 +16,17 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
 
+  const [isFocused, setIsFocused] = useState(false);
+  const [isMdEditorFocused, setIsMdEditorFocused] = useState(false);
+
   const [content, setContent] = useState(props.defaultValue || 'Hello, Milkdown!');
   const { get } = useEditor((root) => {
     const crepe = new Crepe({ root, defaultValue: content });
     crepe.on((listener) => {
-      listener.selectionUpdated((ctx, selection, prevSelection) => {
+      listener.selectionUpdated((ctx) => {
         const isFocused = ctx.get(editorViewCtx).hasFocus();
         if (isFocused) {
-          emitter.emit('selectionUpdated', { ctx, selection, prevSelection });
+          emitter.emit('selectionUpdated');
         }
       });
       listener.markdownUpdated((ctx, markdown) => {
@@ -38,8 +41,8 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
 
   const editor = get();
 
-  // 设置一个状态来跟踪焦点
-  const [isFocused, setIsFocused] = useState(false);
+
+
   useEffect(() => {
     if (!editor) return;
     // 在编辑器创建后
@@ -65,12 +68,12 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   
 
   return (
-    <EditorConfigProvider {...{ ...config, editor, isFocused }}>
+    <EditorConfigProvider {...{ ...config, editor, isFocused, isMdEditorFocused }}>
       <div className="milkdown-editor">
-        <MenuBar />
+        {editor && <MenuBar />}
         <div className="content">
           <Milkdown />
-          <MdEditor content={content} onChange={handleMdEditorChange} />
+          <MdEditor content={content} setIsMdEditorFocused={setIsMdEditorFocused} onChange={handleMdEditorChange} />
         </div>
       </div>
     </EditorConfigProvider>

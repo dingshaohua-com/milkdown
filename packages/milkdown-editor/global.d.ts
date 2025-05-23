@@ -21,12 +21,12 @@ declare interface EditorDefaultConfig {
   onImageUpload?: ({ file, base64, url, id }: { file: File; base64: string; url: string; id: string }) => void;
   placeholder?: string;
   clickToEdit?: boolean;
+  defaultValue?: string;
 }
 
 // 编辑器配置
 type EditorConfig = {
-  defaultValue?: string;
-  onSave?: (arg: string) => void;
+  onSave?: (arg: { doc: any; json: any; markdown: any }) => void;
   placeholder?: string;
   editor?: Editor;
   onBlur?: (arg: any) => void;

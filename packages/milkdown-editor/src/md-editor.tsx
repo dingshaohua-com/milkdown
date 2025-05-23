@@ -1,13 +1,35 @@
 import Editor from '@monaco-editor/react';
-
-export default function MdEditor({ content, onChange }: { content: string, onChange: (content: string) => void }) {
-
-  // return <textarea onInput={(e) => {
-  //   onChange(e.target.value);
-  // }} value={content}></textarea>;
-  return <div className="md-editor">
-  <Editor height="100vh" defaultLanguage="markdown" value={content} onChange={(value) => {
-    onChange(value);
-  }}/>
-  </div>
+interface MdEditorProps {
+  content: string;
+  onChange: (content: string) => void;
+  setIsMdEditorFocused: (isFocused: boolean) => void;
 }
+
+const MdEditor: React.FC<MdEditorProps> = ({ content, onChange, setIsMdEditorFocused }) => {
+  const onBlur = () => {
+    console.log(111);
+    
+    setIsMdEditorFocused(false);
+  }
+  const onFocus = () => {
+    setIsMdEditorFocused(true);
+  }
+  return (
+    <div className="md-editor">
+      <Editor
+        height="100vh"
+        defaultLanguage="markdown"
+        value={content}
+        wrapperProps={{
+          onBlur,
+          onFocus,
+        }}
+        onChange={(value) => {
+          onChange(value);
+        }}
+      />
+    </div>
+  );
+};
+
+export default MdEditor;

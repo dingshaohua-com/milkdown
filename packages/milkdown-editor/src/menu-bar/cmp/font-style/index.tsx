@@ -2,44 +2,34 @@ import { Button, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import emitter from '../../../utils/emitter';
 import type { Editor } from '@milkdown/kit/core';
-import { commandsCtx, editorStateCtx, schemaCtx } from '@milkdown/kit/core';
 import { useEditorConfig } from '../../../config-ctx';
 import { checkMarkActive } from '../../../utils/editor-helper';
+import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
+import { toggleMark, setBlockType } from '@milkdown/kit/prose/commands';
+import { commandsCtx, editorStateCtx, schemaCtx } from '@milkdown/kit/core';
 import { toggleStrongCommand, toggleEmphasisCommand } from '@milkdown/kit/preset/commonmark';
 import { RiBold, RiItalic, RiUnderline, RiStrikethrough, RiEmphasisCn } from '@remixicon/react';
-import { toggleMark, setBlockType } from '@milkdown/kit/prose/commands'
-import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm'
 
-
-const buttonGroupTemp: Array<any> = [
+const buttonGroup: Array<any> = [
   {
-    value: 'strong',
-    label: 'Strong',
+    id: 'strong',
     icon: RiBold,
-    action: (editor: Editor) => {
-      editor.action((ctx) => ctx.get(commandsCtx).call(toggleStrongCommand.key));
-    },
-    isActive: false,
+    action: (editor: Editor) => editor.action((ctx) => ctx.get(commandsCtx).call(toggleStrongCommand.key)),
+    isActive: (editor: Editor) => checkMarkActive('strong', editor),
     tooltip: '粗体',
   },
   {
-    value: 'emphasis',
-    label: 'Emphasis',
+    id: 'emphasis',
     icon: RiItalic,
-    action: (editor: Editor) => {
-      editor.action((ctx) => ctx.get(commandsCtx).call(toggleEmphasisCommand.key));
-    },
-    isActive: false,
+    action: (editor: Editor) => editor.action((ctx) => ctx.get(commandsCtx).call(toggleEmphasisCommand.key)),
+    isActive:(editor: Editor) => checkMarkActive('emphasis', editor),
     tooltip: '斜体',
   },
   {
-    value: 'strike_through',
-    label: 'StrikeThrough',
+    id: 'strike_through',
     icon: RiStrikethrough,
-    action: (editor: Editor) => {
-      editor.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key));
-    },
-    isActive: false,
+    action: (editor: Editor) => editor.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key)),
+    isActive: (editor: Editor) => checkMarkActive('strike_through', editor),
     tooltip: '删除线',
   },
 ];
@@ -48,27 +38,14 @@ const FontStyle = () => {
   const config = useEditorConfig();
   const editor = config.editor as Editor;
 
-  const [buttonGroup, setButtonGroup] = useState(buttonGroupTemp);
-
-  const updateActiveState = (ctx: any, selection: any, prevSelection: any) => {
-    buttonGroup.forEach((item) => {
-      item.isActive = checkMarkActive(item.value, ctx, selection, prevSelection);
-    });
-    setButtonGroup([...buttonGroup]);
-  };
-
-  useEffect(() => {
-    emitter.on('selectionUpdated', (arg: any) => {
-      console.log(111222333, arg.selection);
-      updateActiveState(arg.ctx, arg.selection, arg.prevSelection);
-    });
-  }, []);
+  const [, forceUpdate] = useState({});
+  useEffect(() => emitter.on('selectionUpdated', () => forceUpdate({})), []);
 
   return (
-    <div className="itemsStyle">
-      {buttonGroup.map(({ icon: Icon, tooltip, isActive, action, value }) => (
-        <Tooltip title={tooltip} key={value}>
-          <Button onClick={() => action(editor)} color="default" variant={isActive ? 'solid' : 'filled'} autoInsertSpace>
+    <div className="group">
+      {buttonGroup.map(({ icon: Icon, tooltip, isActive, action, id }) => (
+        <Tooltip title={tooltip} key={id}>
+          <Button onClick={() => action(editor)} color="default" variant={isActive(editor) ? 'solid' : 'filled'} autoInsertSpace>
             <Icon />
           </Button>
         </Tooltip>
