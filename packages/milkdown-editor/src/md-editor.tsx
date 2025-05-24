@@ -16,7 +16,6 @@ const MdEditor: React.FC<MdEditorProps> = ({ content, onChange, setIsMdEditorFoc
   return (
     <div className="md-editor">
       <Editor
-        height="100vh"
         defaultLanguage="markdown"
         value={content}
         wrapperProps={{

@@ -60,6 +60,7 @@
   }
 
   .content {
+    
     flex: 1;
     display: flex;
     & > * {
@@ -68,9 +69,17 @@
       .milkdown {
         height: 100%;
       }
-      .md-editor {
-        padding: 100px 0;
+      
+    }
+    .md-editor {
+      background-color: #fff;
+      padding-top: 60px;
+      border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
+      *{
+
+      font-size: 16px;
       }
+      
     }
   }
 }
