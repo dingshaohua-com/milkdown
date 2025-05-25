@@ -9,12 +9,20 @@ import { useState, useEffect } from 'react';
 import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useSlash } from './plugin/milkdown-slash-menu';
+import { useSlash } from './plugin/slash-menu';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
+import { BlockView } from './plugin/block-view';
+import { block } from '@milkdown/kit/plugin/block';
+import { usePluginViewFactory } from '@prosemirror-adapter/react';
+import { SlashView } from './plugin/slash-menu/view';
+import { slashFactory } from '@milkdown/kit/plugin/slash';
+
+const slash = slashFactory('slashMenu');
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
+  const pluginViewFactory = usePluginViewFactory();
   const slash = useSlash();
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
@@ -47,8 +55,14 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       });
     });
     crepe.editor.config((ctx: any) => {
+      ctx.set(block.key, {
+        view: pluginViewFactory({
+          component: BlockView,
+        })
+      });
       slash.config(ctx);
-    }).use(slash.plugin);
+    }).use(block).use(slash.plugin);
+
     return crepe;
   });
 

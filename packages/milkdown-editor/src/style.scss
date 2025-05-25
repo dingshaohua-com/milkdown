@@ -94,12 +94,48 @@ math-field {
 }
 
 .slash-view {
-  width: 100px;
-  height: 100px;
+  width: 200px;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.1);
-  padding: 10px;
+  padding: 4px;
   position: fixed;
   z-index: 1000;
+
+  .slash-view-content {
+    .slash-view-content-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #f1f5f9;
+      }
+
+      &.selected {
+        background-color: #e2e8f0;
+      }
+    }
+  }
+}
+
+.block-view {
+  position: absolute;
+  width: 24px;
+  background-color: #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    background-color: #cbd5e1;
+  }
+  &[data-show='true'] {
+    opacity: 1;
+  }
+  svg{
+    width: 24px;
+    height: 24px;
+  }
 }
