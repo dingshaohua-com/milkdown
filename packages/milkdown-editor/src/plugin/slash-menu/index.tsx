@@ -1,9 +1,11 @@
 import { SlashView } from "./view";
-import { Ctx } from "@milkdown/kit/ctx";
+import { createSlice, Ctx } from "@milkdown/kit/ctx";
 import { usePluginViewFactory } from "@prosemirror-adapter/react";
 import { slashFactory } from '@milkdown/kit/plugin/slash';
 
-const slash = slashFactory('slashMenu');
+
+export const slash = slashFactory('slashMenu');
+// export const slashCtx:any = createSlice(null, 'slash-ctx')
 export const useSlash = () => {
   const pluginViewFactory = usePluginViewFactory();
   return {
@@ -21,6 +23,26 @@ export const useSlash = () => {
         }),
         opened: false,
       });
+
+      // // 添加控制 slash-menu 显示的方法
+      // const showSlashMenu = () => {
+      //   const state = ctx.get(slash.key);
+      //   state.opened = true;
+      //   ctx.set(slash.key, state);
+      // };
+
+      // const hideSlashMenu = () => {
+      //   const state = ctx.get(slash.key);
+      //   state.opened = false;
+      //   ctx.set(slash.key, state);
+      // };
+
+      // ctx.set(slashCtx, slash);
+
+      // return {
+      //   showSlashMenu,
+      //   hideSlashMenu,
+      // };
     },
   };
 };

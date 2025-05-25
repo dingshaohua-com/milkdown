@@ -2,11 +2,18 @@ import { useEffect, useRef } from 'react';
 import { useInstance } from '@milkdown/react';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
+import { slash } from '../slash-menu';
 
-export const BlockView = () => {
+export const BlockView = (props: any) => {
+  console.log(111, props);
+  
   const ref = useRef<HTMLDivElement>(null);
   const tooltipProvider = useRef<BlockProvider>(null);
-  const { view, prevState } = usePluginViewContext();
+  const all =  usePluginViewContext();
+
+  console.log(all);
+  
+  const { view, prevState } = all
 
   const [loading, get] = useInstance();
 
@@ -40,8 +47,24 @@ export const BlockView = () => {
   }, [view, prevState]);
 
   const onClick = () => {
-    console.log(123);
+    const editor = get();
+    if (!editor) return;
+    const slash1 = editor.ctx.get(slash.key);
+    console.log(slash1.opened);
+
+    // editor.ctx.set(slash.keystate);
+
+    // slash1.opened = true;
     
+    // .showSlashMenu();
+    
+    // editor.action((ctx) => {
+    //   const state = ctx.get(slash.key);
+    //   if (state) {
+    //     state.opened = true;
+    //     ctx.set(slash.key, state);
+    //   }
+    // });
   };
 
   return (

@@ -16,10 +16,6 @@ import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 import { BlockView } from './plugin/block-view';
 import { block } from '@milkdown/kit/plugin/block';
 import { usePluginViewFactory } from '@prosemirror-adapter/react';
-import { SlashView } from './plugin/slash-menu/view';
-import { slashFactory } from '@milkdown/kit/plugin/slash';
-
-const slash = slashFactory('slashMenu');
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
@@ -55,13 +51,23 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       });
     });
     crepe.editor.config((ctx: any) => {
+      slash.config(ctx);
+    }).use(slash.plugin);
+
+
+    crepe.editor.config((ctx: any) => {
       ctx.set(block.key, {
+        props: {
+          slash
+        },
         view: pluginViewFactory({
           component: BlockView,
         })
       });
-      slash.config(ctx);
-    }).use(block).use(slash.plugin);
+    }).use(block);
+
+
+
 
     return crepe;
   });
