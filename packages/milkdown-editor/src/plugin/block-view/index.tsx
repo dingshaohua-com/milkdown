@@ -1,12 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useInstance } from '@milkdown/react';
-import { editorViewCtx } from '@milkdown/kit/core';
-import { TextSelection } from '@milkdown/kit/prose/state';
-import { slashFactory } from '@milkdown/kit/plugin/slash';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-
-const menuAPI = slashFactory('slashMenu');
 
 export const BlockView = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -45,18 +40,8 @@ export const BlockView = () => {
   }, [view, prevState]);
 
   const onClick = () => {
-    const editor = get();
-    if (!editor) return;
-
-    const active = tooltipProvider.current?.active;
-    if (!active) return;
-
-    const editorView = editor.ctx.get(editorViewCtx);
-    const pos = active.$pos.pos;
-    const tr = editorView.state.tr.setSelection(TextSelection.near(editorView.state.doc.resolve(pos)));
-    editorView.dispatch(tr.scrollIntoView());
-
-    editor.ctx.get(menuAPI.key).show(pos);
+    console.log(123);
+    
   };
 
   return (
