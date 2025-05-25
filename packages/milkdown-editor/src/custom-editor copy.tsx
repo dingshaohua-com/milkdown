@@ -9,13 +9,10 @@ import { useState, useEffect } from 'react';
 import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useSlash } from './plugin/milkdown-slash-menu';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
-import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
-  const slash = useSlash();
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
   const [mdMode, setMdMode] = useState(config.mdMode || false);
@@ -24,12 +21,20 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const [content, setContent] = useState(config.content || 'Hello, Milkdown!');
 
   const { get } = useEditor((root) => {
-    const crepe = new Crepe({
-      root,
-      defaultValue: content,
-      features: {
-        "block-edit": false
+    const crepe = new Crepe({ 
+      root, defaultValue: content ,
+      featureConfigs: {
+        "block-edit": {
+          slashMenuH1Label:'标题'
+          
+        },
+        // block: {
+        //   options: {
+        //     defaultBlock: 'paragraph',
+        //   },
+        // },
       },
+    
     });
     crepe.on((listener) => {
       listener.selectionUpdated((ctx) => {
@@ -46,9 +51,6 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
         }
       });
     });
-    crepe.editor.config((ctx: any) => {
-      slash.config(ctx);
-    }).use(slash.plugin);
     return crepe;
   });
 
@@ -93,9 +95,7 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
 export const MilkdownEditorWrapper: React.FC<EditorConfig> = (props) => {
   return (
     <MilkdownProvider>
-      <ProsemirrorAdapterProvider>
-        <CrepeEditor {...props} />
-      </ProsemirrorAdapterProvider>
+      <CrepeEditor {...props} />
     </MilkdownProvider>
   );
 };

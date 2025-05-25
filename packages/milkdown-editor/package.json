@@ -11,11 +11,13 @@
   "license": "ISC",
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
+    "@floating-ui/core": "^1.7.0",
     "@milkdown/crepe": "^7.11.0",
     "@milkdown/kit": "^7.11.0",
     "@milkdown/plugin-listener": "^7.11.0",
     "@milkdown/react": "^7.11.0",
     "@monaco-editor/react": "^4.7.0",
+    "@prosemirror-adapter/react": "^0.4.1",
     "@remixicon/react": "^4.6.0",
     "@types/react": "^19.1.4",
     "antd": "^5.25.2",

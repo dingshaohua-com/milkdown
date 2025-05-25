@@ -72,6 +72,9 @@ importers:
 
   packages/milkdown-editor:
     dependencies:
+      '@floating-ui/core':
+        specifier: ^1.7.0
+        version: 1.7.0
       '@milkdown/crepe':
         specifier: ^7.11.0
         version: 7.11.0(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.3)(typescript@5.8.3)
@@ -87,6 +90,9 @@ importers:
       '@monaco-editor/react':
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.52.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@prosemirror-adapter/react':
+        specifier: ^0.4.1
+        version: 0.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@remixicon/react':
         specifier: ^4.6.0
         version: 4.6.0(react@19.1.0)
@@ -712,6 +718,20 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@prosemirror-adapter/core@0.4.0':
+    resolution: {integrity: sha512-feLFTIvbpQDnWspZv+rjTPmqpeJ8++VM/gDnBaDNLsAEvrwmO1IHc0oyrRBl/9x3Er3tU/WXc86TlOidsN1aEg==}
+
+  '@prosemirror-adapter/react@0.4.1':
+    resolution: {integrity: sha512-m2OdJoAGqXYHFi2vfy0DICTdOqUP2zDYfHe1cKQMM6Ri2M4n07c8812xBUkFBasLlfYm+d82N6ebTA6+B/0qEg==}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   '@rc-component/async-validator@5.0.4':
     resolution: {integrity: sha512-qgGdcVIF604M9EqjNF0hbUTz42bz/RDtxWdWuU5EQe3hi7M8ob54B6B35rOsvX5eSvIHIzT9iH1R3n+hk3CGfg==}
@@ -3426,6 +3446,19 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
+
+  '@prosemirror-adapter/core@0.4.0':
+    dependencies:
+      tslib: 2.8.1
+
+  '@prosemirror-adapter/react@0.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@prosemirror-adapter/core': 0.4.0
+      nanoid: 5.1.5
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   '@rc-component/async-validator@5.0.4':
     dependencies:
