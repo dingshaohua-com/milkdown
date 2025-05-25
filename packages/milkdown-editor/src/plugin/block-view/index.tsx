@@ -1,19 +1,19 @@
+import { slash } from '../slash-menu';
 import { useEffect, useRef } from 'react';
 import { useInstance } from '@milkdown/react';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { slash } from '../slash-menu';
 
 export const BlockView = (props: any) => {
   console.log(111, props);
-  
+
   const ref = useRef<HTMLDivElement>(null);
   const tooltipProvider = useRef<BlockProvider>(null);
-  const all =  usePluginViewContext();
+  const all = usePluginViewContext();
 
   console.log(all);
-  
-  const { view, prevState } = all
+
+  const { view, prevState } = all;
 
   const [loading, get] = useInstance();
 
@@ -55,9 +55,9 @@ export const BlockView = (props: any) => {
     // editor.ctx.set(slash.keystate);
 
     // slash1.opened = true;
-    
+
     // .showSlashMenu();
-    
+
     // editor.action((ctx) => {
     //   const state = ctx.get(slash.key);
     //   if (state) {
@@ -69,8 +69,8 @@ export const BlockView = (props: any) => {
 
   return (
     <div ref={ref} className="block-view">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" onClick={onClick}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+      <svg width="1em" height="1em" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" >
+        <path d="M88 187c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm-80-76c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18ZM88 35c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Z" fill="currentColor" fill-rule="nonzero"></path>
       </svg>
     </div>
   );
