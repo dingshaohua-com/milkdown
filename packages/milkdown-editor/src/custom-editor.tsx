@@ -10,14 +10,16 @@ import { useBlock } from './plugin/block-view';
 import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useSlash } from './plugin/slash-menu-block';
+import { useSlashPlus } from './plugin/slash-menu-plus';
+import { useSlashBlock } from './plugin/slash-menu-block';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
-  const slash = useSlash();
   const block = useBlock();
+  const slashBlock = useSlashBlock();
+  const slashPlus = useSlashPlus();
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
   const [mdMode, setMdMode] = useState(config.mdMode || false);
@@ -50,9 +52,15 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
     });
     crepe.editor
       .config((ctx: any) => {
-        slash.config(ctx);
+        slashBlock.config(ctx);
       })
-      .use(slash.plugin);
+      .use(slashBlock.plugin);
+
+    // crepe.editor
+    //   .config((ctx: any) => {
+    //     slashPlus.config(ctx);
+    //   })
+    //   .use(slashPlus.plugin);
 
     crepe.editor
       .config((ctx: any) => {
