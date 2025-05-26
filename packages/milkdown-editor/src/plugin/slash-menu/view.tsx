@@ -40,6 +40,7 @@ export const SlashView = () => {
       const slashSclice = editor.ctx.use(slash.key);
       const watcher = slashSclice.on((state) => {
         console.log(state);
+        provider.current?.show();
       });
       return () => {
         slashSclice.off(watcher);
