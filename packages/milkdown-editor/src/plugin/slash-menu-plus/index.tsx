@@ -10,12 +10,12 @@ export const useSlashPlus = () => {
     plugin: slashPlus,
     config: (ctx: Ctx) => {
       ctx.set(slashPlus.key, {
-        props: {
-          handleKeyDown: (view, event) => {
-            if (!ctx.get(slashPlus.key).opened) return false;
-            return ['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key);
-          },
-        },
+        // props: {
+        //   handleKeyDown: (view, event) => {
+        //     if (!ctx.get(slashPlus.key).opened) return false;
+        //     return ['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key);
+        //   },
+        // },
         view: pluginViewFactory({
           component: SlashView,
         }),

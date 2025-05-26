@@ -1,10 +1,20 @@
-import { slash } from '.';
+import { $ctx } from '@milkdown/kit/utils';
 import { useInstance } from '@milkdown/react';
 import { commandsCtx } from '@milkdown/kit/core';
 import { useEffect, useRef, useState } from 'react';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
 import { wrapInHeadingCommand } from '@milkdown/kit/preset/commonmark';
+
+
+// $ctx是创建slice 的简单封装
+export const slashBlockApi:any = $ctx(
+  { // 这里初始化参数，其实意义不大
+    show: () => {},
+    hide: () => {},
+  },
+  'menuAPICtx',
+);
 
 export const SlashView = () => {
   const instance = useInstance();
@@ -26,24 +36,30 @@ export const SlashView = () => {
   }, [view]);
   useEffect(() => provider.current?.update(view, prevState));
 
+  const show = () => {
+    console.log(8989)
+    
+    provider.current?.show();
+  };
+  const hide = () => {
+    provider.current?.hide();
+  };
+
   const checkFmt = (type: string) => {
     if (type === 'heading1') {
       editor.ctx.get(commandsCtx).call(wrapInHeadingCommand.key, 1);
     }
   };
 
-  // useEffect(() => {
-  //   if (editor) {
-  //     const slashSclice = editor.ctx.use(slash.key);
-  //     const watcher = slashSclice.on((state) => {
-  //       console.log(state);
-  //       provider.current?.show();
-  //     });
-  //     return () => {
-  //       slashSclice.off(watcher);
-  //     };
-  //   }
-  // }, [loading]);
+  useEffect(() => {
+    if (!editor) return;
+    editor.use(slashBlockApi);
+    editor.ctx.set(slashBlockApi.key, {
+      show: () => show(),
+      hide: () => hide(),
+    })
+    
+  }, [loading]);
 
   return (
     <div className="slash-view" ref={containerRef}>
