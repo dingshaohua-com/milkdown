@@ -22,6 +22,7 @@ export const SlashView = () => {
     return () => {
       provider.current?.destroy();
       provider.current = null;
+      containerRef.current?.remove();
     };
   }, [view]);
   useEffect(() => provider.current?.update(view, prevState));

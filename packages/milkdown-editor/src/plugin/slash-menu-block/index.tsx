@@ -1,5 +1,5 @@
 import { SlashView } from './view';
-import { createSlice, Ctx } from '@milkdown/kit/ctx';
+import { Ctx } from '@milkdown/kit/ctx';
 import { slashFactory } from '@milkdown/kit/plugin/slash';
 import { usePluginViewFactory } from '@prosemirror-adapter/react';
 

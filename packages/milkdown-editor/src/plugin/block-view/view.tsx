@@ -2,9 +2,9 @@ import plus from '../../assets/plus.svg';
 import { useEffect, useRef } from 'react';
 import block from '../../assets/block.svg';
 import { useInstance } from '@milkdown/react';
+import { slashBlockApi } from '../slash-menu-block/view';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { slashBlockApi } from '../slash-menu-block/view';
 
 export const BlockView = (props: any) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,15 +46,17 @@ export const BlockView = (props: any) => {
   const onClickBlock = () => {
     const editor = get();
     if (!editor) return;
-    const sbApi:any = editor.ctx.get(slashBlockApi.key);
+    const sbApi: any = editor.ctx.get(slashBlockApi.key);
     sbApi.show();
   };
 
   return (
-    <div ref={ref} className="block-view">
-      <div className="block-view-container">
-        <img src={plus} alt="plus" />
-        <img src={block} alt="block" onClick={onClickBlock}/>
+    <div>
+      <div ref={ref} className="block-view">
+        <div className="block-view-container">
+          <img src={plus} alt="plus" />
+          <img src={block} alt="block" onClick={onClickBlock} />
+        </div>
       </div>
     </div>
   );

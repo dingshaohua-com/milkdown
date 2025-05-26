@@ -1,10 +1,8 @@
 import { $ctx } from '@milkdown/kit/utils';
 import { useInstance } from '@milkdown/react';
-import { commandsCtx } from '@milkdown/kit/core';
 import { useEffect, useRef, useState } from 'react';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { wrapInHeadingCommand } from '@milkdown/kit/preset/commonmark';
 
 
 // $ctx是创建slice 的简单封装
@@ -13,7 +11,7 @@ export const slashBlockApi:any = $ctx(
     show: () => {},
     hide: () => {},
   },
-  'menuAPICtx',
+  'menuAPICtx'
 );
 
 export const SlashView = () => {
@@ -28,27 +26,24 @@ export const SlashView = () => {
     provider.current = new SlashProvider({
       content: containerRef.current,
       debounce: 50,
+      offset: 10,
+      floatingUIOptions: {
+        placement: 'left',
+      }
     });
     return () => {
       provider.current?.destroy();
       provider.current = null;
+      containerRef.current?.remove();
     };
   }, [view]);
   useEffect(() => provider.current?.update(view, prevState));
 
   const show = () => {
-    console.log(8989)
-    
     provider.current?.show();
   };
   const hide = () => {
     provider.current?.hide();
-  };
-
-  const checkFmt = (type: string) => {
-    if (type === 'heading1') {
-      editor.ctx.get(commandsCtx).call(wrapInHeadingCommand.key, 1);
-    }
   };
 
   useEffect(() => {
@@ -64,8 +59,8 @@ export const SlashView = () => {
   return (
     <div className="slash-view" ref={containerRef}>
       <div className="slash-view-content">
-        <div className="slash-view-content-item" onClick={() => checkFmt('heading1')}>
-          标题 1
+        <div className="slash-view-content-item">
+         删除
         </div>
       </div>
     </div>
