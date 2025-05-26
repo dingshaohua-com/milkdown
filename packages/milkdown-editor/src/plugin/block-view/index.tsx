@@ -1,4 +1,4 @@
-import { slash } from '../slash-menu';
+// import { slash } from '../slash-menu';
 import { useEffect, useRef } from 'react';
 import { useInstance } from '@milkdown/react';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
@@ -44,10 +44,10 @@ export const BlockView = (props: any) => {
     const editor = get();
     if (!editor) return;
     // const slashSclice = editor.ctx.get(slash.key);
-    editor.ctx.update(slash.key, (state) => {
-      state.opened = true;
-      return state;
-    });
+    // editor.ctx.update(slash.key, (state) => {
+    //   state.opened = true;
+    //   return state;
+    // });
   };
 
   return (

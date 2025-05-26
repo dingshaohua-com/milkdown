@@ -13,15 +13,12 @@ export const SlashView = () => {
   const { view, prevState } = usePluginViewContext();
   const provider = useRef<SlashProvider>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     if (!containerRef.current || !view) return;
     provider.current = new SlashProvider({
       content: containerRef.current,
       debounce: 50,
     });
-    provider.current.onShow = () => setIsOpen(true);
-    provider.current.onHide = () => setIsOpen(false);
     return () => {
       provider.current?.destroy();
       provider.current = null;
@@ -35,21 +32,21 @@ export const SlashView = () => {
     }
   };
 
-  useEffect(() => {
-    if (editor) {
-      const slashSclice = editor.ctx.use(slash.key);
-      const watcher = slashSclice.on((state) => {
-        console.log(state);
-        provider.current?.show();
-      });
-      return () => {
-        slashSclice.off(watcher);
-      };
-    }
-  }, [loading]);
+  // useEffect(() => {
+  //   if (editor) {
+  //     const slashSclice = editor.ctx.use(slash.key);
+  //     const watcher = slashSclice.on((state) => {
+  //       console.log(state);
+  //       provider.current?.show();
+  //     });
+  //     return () => {
+  //       slashSclice.off(watcher);
+  //     };
+  //   }
+  // }, [loading]);
 
   return (
-    <div className="slash-view" style={{ display: isOpen ? 'block' : 'none' }} ref={containerRef}>
+    <div className="slash-view" ref={containerRef}>
       <div className="slash-view-content">
         <div className="slash-view-content-item" onClick={() => checkFmt('heading1')}>
           标题 1

@@ -119,6 +119,14 @@ math-field {
     }
   }
 }
+[data-show='true'] {
+  display: block;
+}
+[data-show='false'] {
+  display: none;
+}
+
+
 
 .block-view {
   position: absolute;
@@ -142,4 +150,5 @@ math-field {
     width: 16px;
     height: 16px;
   }
+  
 }
