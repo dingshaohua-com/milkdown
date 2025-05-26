@@ -5,16 +5,10 @@ import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
 
 export const BlockView = (props: any) => {
-  console.log(111, props);
-
   const ref = useRef<HTMLDivElement>(null);
   const tooltipProvider = useRef<BlockProvider>(null);
   const all = usePluginViewContext();
-
-  console.log(all);
-
   const { view, prevState } = all;
-
   const [loading, get] = useInstance();
 
   useEffect(() => {
@@ -49,26 +43,15 @@ export const BlockView = (props: any) => {
   const onClick = () => {
     const editor = get();
     if (!editor) return;
-    const slash1 = editor.ctx.get(slash.key);
-    console.log(slash1.opened);
-
-    // editor.ctx.set(slash.keystate);
-
-    // slash1.opened = true;
-
-    // .showSlashMenu();
-
-    // editor.action((ctx) => {
-    //   const state = ctx.get(slash.key);
-    //   if (state) {
-    //     state.opened = true;
-    //     ctx.set(slash.key, state);
-    //   }
-    // });
+    // const slashSclice = editor.ctx.get(slash.key);
+    editor.ctx.update(slash.key, (state) => {
+      state.opened = true;
+      return state;
+    });
   };
 
   return (
-    <div ref={ref} className="block-view">
+    <div ref={ref} className="block-view" onClick={onClick}>
       <svg width="1em" height="1em" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" >
         <path d="M88 187c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm-80-76c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18ZM88 35c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Zm80 0c9.941 0 18 8.059 18 18s-8.059 18-18 18-18-8.059-18-18 8.059-18 18-18Z" fill="currentColor" fill-rule="nonzero"></path>
       </svg>

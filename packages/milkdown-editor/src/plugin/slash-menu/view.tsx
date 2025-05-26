@@ -1,3 +1,4 @@
+import { slash } from '.';
 import { useInstance } from '@milkdown/react';
 import { commandsCtx } from '@milkdown/kit/core';
 import { useEffect, useRef, useState } from 'react';
@@ -33,6 +34,18 @@ export const SlashView = () => {
       editor.ctx.get(commandsCtx).call(wrapInHeadingCommand.key, 1);
     }
   };
+
+  useEffect(() => {
+    if (editor) {
+      const slashSclice = editor.ctx.use(slash.key);
+      const watcher = slashSclice.on((state) => {
+        console.log(state);
+      });
+      return () => {
+        slashSclice.off(watcher);
+      };
+    }
+  }, [loading]);
 
   return (
     <div className="slash-view" style={{ display: isOpen ? 'block' : 'none' }} ref={containerRef}>
