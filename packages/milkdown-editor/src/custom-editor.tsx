@@ -6,20 +6,18 @@ import { Crepe } from '@milkdown/crepe';
 import { EditorConfig } from '../global';
 import '@milkdown/crepe/theme/frame.css'; // 一个完整主题（可选，其它可选项见下）
 import { useState, useEffect } from 'react';
+import { useBlock } from './plugin/block-view';
 import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useSlash } from './plugin/slash-menu';
+import { useSlash } from './plugin/slash-menu-block';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
-import { BlockView } from './plugin/block-view';
-import { block } from '@milkdown/kit/plugin/block';
-import { usePluginViewFactory } from '@prosemirror-adapter/react';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
-  const pluginViewFactory = usePluginViewFactory();
   const slash = useSlash();
+  const block = useBlock();
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
   const [mdMode, setMdMode] = useState(config.mdMode || false);
@@ -32,7 +30,7 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       root,
       defaultValue: content,
       features: {
-        "block-edit": false
+        'block-edit': false,
       },
     });
     crepe.on((listener) => {
@@ -50,24 +48,17 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
         }
       });
     });
-    crepe.editor.config((ctx: any) => {
-      slash.config(ctx);
-    }).use(slash.plugin);
+    crepe.editor
+      .config((ctx: any) => {
+        slash.config(ctx);
+      })
+      .use(slash.plugin);
 
-
-    crepe.editor.config((ctx: any) => {
-      ctx.set(block.key, {
-        props: {
-          slash
-        },
-        view: pluginViewFactory({
-          component: BlockView,
-        })
-      });
-    }).use(block);
-
-
-
+    crepe.editor
+      .config((ctx: any) => {
+        block.config(ctx);
+      })
+      .use(block.plugin);
 
     return crepe;
   });

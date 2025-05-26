@@ -23,6 +23,9 @@ importers:
       '@repo/milkdown-editor':
         specifier: workspace:*
         version: link:../../packages/milkdown-editor
+      antd:
+        specifier: ^5.25.2
+        version: 5.25.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       less:
         specifier: ^4.3.0
         version: 4.3.0
