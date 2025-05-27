@@ -6,6 +6,7 @@ import { slashBlockApi } from '../slash-menu-block/view';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
 import { editorViewCtx } from '@milkdown/kit/core';
+import { createParagraphNear } from '@milkdown/kit/prose/commands';
 
 export const BlockView = (props: any) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -54,16 +55,22 @@ export const BlockView = (props: any) => {
   };
 
   const onClickPlus = () => {
-   console.log(222);
     const editor = get();
     if (!editor) return;
     
     editor.action((ctx) => {
       const { state, dispatch } = ctx.get(editorViewCtx);
-      const { tr } = state;
-      const { $from } = state.selection;
-      // 在当前位置插入换行符和 /
-      tr.insertText('\n/');
+      
+      
+      // 在当前节点后创建新段落
+      createParagraphNear(state, dispatch);
+      
+      // 获取新的状态
+      const newState = ctx.get(editorViewCtx).state;
+      const { tr } = newState;
+      
+      // 在换行后插入 /
+      tr.insertText('/');
       dispatch(tr);
     });
   };
