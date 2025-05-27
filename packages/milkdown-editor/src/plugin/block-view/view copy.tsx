@@ -5,7 +5,6 @@ import { useInstance } from '@milkdown/react';
 import { slashBlockApi } from '../slash-menu-block/view';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { editorViewCtx } from '@milkdown/kit/core';
 
 export const BlockView = (props: any) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -45,36 +44,38 @@ export const BlockView = (props: any) => {
   }, [view, prevState]);
 
   const onClickBlock = () => {
-  console.log(111);
-  
     const editor = get();
     if (!editor) return;
     const sbApi: any = editor.ctx.get(slashBlockApi.key);
     sbApi.show();
   };
 
-  const onClickPlus = () => {
-   console.log(222);
-    const editor = get();
-    if (!editor) return;
-    
-    editor.action((ctx) => {
-      const { state, dispatch } = ctx.get(editorViewCtx);
-      const { tr } = state;
-      const { $from } = state.selection;
-      // 在当前位置插入换行符和 /
-      tr.insertText('\n/');
-      dispatch(tr);
-    });
-  };
-
+    // 添加全局点击事件监听器
+    const blockRef = useRef<HTMLImageElement>(null);
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        const editor = get();
+        if (!editor) return;
+  
+        // 如果点击的不是 block-view 元素，则关闭菜单
+        if (blockRef.current && !blockRef.current.contains(event.target as Node)) {
+          const sbApi: any = editor.ctx.get(slashBlockApi.key);
+          sbApi.hide();
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
   return (
     <div>
       <div ref={ref} className="block-view">
         <div className="block-view-container">
-          <img src={plus} alt="plus"  onClick={onClickPlus}/>
-          <img src={block} alt="block" onClick={onClickBlock} />
+          <img src={plus} alt="plus" />
+          <img src={block} alt="block" onClick={onClickBlock}  ref={blockRef} />
         </div>
       </div>
     </div>

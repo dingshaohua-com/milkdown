@@ -18,8 +18,7 @@ export const useSlashPlus = () => {
         // },
         view: pluginViewFactory({
           component: SlashView,
-        }),
-        opened: false,
+        })
       });
     },
   };

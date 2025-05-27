@@ -10,12 +10,6 @@ export const useSlashBlock = () => {
     plugin: slashBlock,
     config: (ctx: Ctx) => {
       ctx.set(slashBlock.key, {
-        // props: {
-        //   handleKeyDown: (view, event) => {
-        //     if (!ctx.get(slashBlock.key).opened) return false;
-        //     return ['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key);
-        //   },
-        // },
         view: pluginViewFactory({
           component: SlashView,
         })

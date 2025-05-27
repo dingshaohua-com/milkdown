@@ -27,8 +27,9 @@ export const SlashView = () => {
       content: containerRef.current,
       debounce: 50,
       offset: 10,
+      trigger:'',
       floatingUIOptions: {
-        placement: 'left',
+        strategy: 'fixed'
       }
     });
     return () => {
@@ -40,9 +41,21 @@ export const SlashView = () => {
   useEffect(() => provider.current?.update(view, prevState));
 
   const show = () => {
+    console.log('show');
+    
+    if (!view || !containerRef.current) return;
+    const { state } = view;
+    const { selection } = state;
+    const { $anchor } = selection;
+    const pos = view.coordsAtPos($anchor.pos);
+    const container = containerRef.current;
+    container.style.top = `${pos.top+30}px`;
+    container.style.left = `${pos.left - 40}px`;
+    
     provider.current?.show();
   };
   const hide = () => {
+    console.log('hide');
     provider.current?.hide();
   };
 

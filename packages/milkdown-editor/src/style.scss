@@ -11,6 +11,7 @@
 }
 
 .milkdown-editor {
+  
   height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -101,6 +102,8 @@ math-field {
   padding: 4px;
   position: fixed;
   z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 
   .slash-view-content {
     .slash-view-content-item {
@@ -120,7 +123,7 @@ math-field {
   }
 }
 [data-show='true'] {
-  opacity: 1;
+  opacity: 1!important;
 }
 [data-show='false'] {
   opacity: 0;
@@ -128,7 +131,9 @@ math-field {
 
 .block-view {
   position: absolute;
+  opacity: 0;
   transition: opacity 0.2s ease-in-out;
+
 
   .block-view-container {
     display: flex;

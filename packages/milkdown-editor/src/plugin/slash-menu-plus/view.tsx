@@ -33,19 +33,6 @@ export const SlashView = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (editor) {
-  //     const slashSclice = editor.ctx.use(slash.key);
-  //     const watcher = slashSclice.on((state) => {
-  //       console.log(state);
-  //       provider.current?.show();
-  //     });
-  //     return () => {
-  //       slashSclice.off(watcher);
-  //     };
-  //   }
-  // }, [loading]);
-
   return (
     <div className="slash-view" ref={containerRef}>
       <div className="slash-view-content">
