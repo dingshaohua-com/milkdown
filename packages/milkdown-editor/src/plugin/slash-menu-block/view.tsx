@@ -7,7 +7,7 @@ import { usePluginViewContext } from '@prosemirror-adapter/react';
 
 // $ctx是创建slice 的简单封装
 export const slashBlockApi:any = $ctx(
-  { // 这里初始化参数，其实意义不大
+  { // 这里初始化参数，要是函数，其实意义不大
     show: () => {},
     hide: () => {},
   },
@@ -15,14 +15,14 @@ export const slashBlockApi:any = $ctx(
 );
 
 export const SlashView = () => {
-  const instance = useInstance();
-  const [loading, getEditor] = instance;
+  const [loading, getEditor] = useInstance();;
   const editor = getEditor()!;
+
   const { view, prevState } = usePluginViewContext();
   const provider = useRef<SlashProvider>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!containerRef.current || !view) return;
+    if (!containerRef.current || !view ) return;
     provider.current = new SlashProvider({
       content: containerRef.current,
       debounce: 50,
@@ -38,6 +38,7 @@ export const SlashView = () => {
       containerRef.current?.remove();
     };
   }, [view]);
+
   useEffect(() => provider.current?.update(view, prevState));
 
   const show = () => {
@@ -48,10 +49,8 @@ export const SlashView = () => {
     const { selection } = state;
     const { $anchor } = selection;
     const pos = view.coordsAtPos($anchor.pos);
-    const container = containerRef.current;
-    container.style.top = `${pos.top+30}px`;
-    container.style.left = `${pos.left - 40}px`;
-    
+    containerRef.current.style.top = `${pos.top+30}px`;
+    containerRef.current.style.left = `${pos.left - 40}px`;
     provider.current?.show();
   };
   const hide = () => {
