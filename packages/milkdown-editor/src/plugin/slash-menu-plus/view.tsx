@@ -34,7 +34,7 @@ export const SlashView = () => {
   };
 
   return (
-    <div className="slash-view" ref={containerRef}>
+    <div className="slash-view-plus" ref={containerRef}>
       <div className="slash-view-content">
         <div className="slash-view-content-item" onClick={() => checkFmt('heading1')}>
           标题 1

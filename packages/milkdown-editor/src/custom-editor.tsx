@@ -56,11 +56,11 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       })
       .use(slashBlock.plugin);
 
-    // crepe.editor
-    //   .config((ctx: any) => {
-    //     slashPlus.config(ctx);
-    //   })
-    //   .use(slashPlus.plugin);
+    crepe.editor
+      .config((ctx: any) => {
+        slashPlus.config(ctx);
+      })
+      .use(slashPlus.plugin);
 
     crepe.editor
       .config((ctx: any) => {

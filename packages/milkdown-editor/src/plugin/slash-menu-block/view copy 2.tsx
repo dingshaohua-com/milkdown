@@ -80,22 +80,14 @@ export const SlashView = () => {
       const node = state.doc.nodeAt(pos);
       if (!node) return;
 
-      // 获取当前节点的起始位置和结束位置
-      const start = pos - $anchor.parentOffset;
-      const end = start + node.nodeSize;
-
-      console.log(start, end);
-      
-      
-      // 删除当前节点
-      const tr = state.tr.delete(start, end);
+      // 删除当前块
+      const tr = state.tr.delete(pos - $anchor.parentOffset, pos - $anchor.parentOffset + node.nodeSize);
       view.dispatch(tr);
-      
+
       // 隐藏菜单
       hide();
     });
   };
-
 
   const onInsertHeading1 = () => {
     if (!editor) return;
@@ -108,18 +100,21 @@ export const SlashView = () => {
       if (!node) return;
 
       // 在下一行插入标题1
-      const tr = state.tr.insert(pos + node.nodeSize, state.schema.nodes.heading.create({ level: 1 }));
-      // const tr = state.tr.insert(pos + node.nodeSize, state.schema.nodes.heading.create({ level: 1 }, state.schema.text(' ')));
-      
-      // 将光标移动到新插入的标题1的文本节点中
-      const newPos = pos + node.nodeSize + 1;
-      tr.setSelection(TextSelection.near(tr.doc.resolve(newPos)));
-      
-      view.dispatch(tr.scrollIntoView());
+      // const tr = state.tr.insert(pos + node.nodeSize, state.schema.nodes.heading.create({ level: 1 }, state.schema.text('123')));
+      // view.dispatch(tr);
+
+
+      // const $pos = active.$pos
+      // const pos = $pos.pos + active.node.nodeSize
       view.focus()
+      let tr = state.tr.insert(pos, paragraphSchema.type(ctx).create())
+      tr = tr.setSelection(TextSelection.near(tr.doc.resolve(pos)))
+      view.dispatch(tr.scrollIntoView())
       
       // 隐藏菜单
       hide();
+
+      
     });
   };
 

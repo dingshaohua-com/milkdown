@@ -95,6 +95,35 @@ math-field {
 }
 
 .slash-view {
+  width: 100px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.1);
+  padding: 4px;
+  position: fixed;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  .slash-view-content {
+    .slash-view-content-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #f1f5f9;
+      }
+
+      &.selected {
+        background-color: #e2e8f0;
+      }
+    }
+  }
+}
+
+.slash-view-plus{
   width: 200px;
   background-color: #fff;
   border-radius: 4px;
@@ -127,6 +156,7 @@ math-field {
 }
 [data-show='false'] {
   opacity: 0;
+  z-index: -1;
 }
 
 .block-view {
