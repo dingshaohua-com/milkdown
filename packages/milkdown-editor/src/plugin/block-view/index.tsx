@@ -1,24 +1,14 @@
-import { BlockView } from './view';
-import { Ctx } from '@milkdown/kit/ctx';
-import { usePluginViewFactory } from '@prosemirror-adapter/react';
+import { View } from './view';
 import { block } from '@milkdown/kit/plugin/block';
 
-
-export const useBlock = () => {
-  const pluginViewFactory = usePluginViewFactory();
-  return {
-    plugin: block,
-    config: (ctx: Ctx) => {
+export const install = (editor: any, pluginViewFactory: any) => {
+  editor
+    .config((ctx: any) => {
       ctx.set(block.key, {
         view: pluginViewFactory({
-          component: BlockView
+          component: View,
         }),
-        shouldShow: (view: any) => {
-          const { state } = view;
-          const { selection } = state;
-          return selection.$anchor.parent.type.name !== 'doc';
-        }
       });
-    },
-  };
+    })
+    .use(block);
 };

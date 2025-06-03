@@ -6,23 +6,23 @@ import { EditorConfig } from '../global';
 // import '@milkdown/crepe/theme/frame.css'; // 一个完整主题（可选，其它可选项见下）
 import { useState, useEffect } from 'react';
 import { nord } from '@milkdown/theme-nord';
-import { useBlock } from './plugin/block-view';
 // import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
 import { useSlashPlus } from './plugin/slash-menu-plus';
 import { useSlashBlock } from './plugin/slash-menu-block';
 import { commonmark } from '@milkdown/kit/preset/commonmark';
+import { install as blockViewInstall } from './plugin/block-view';
 import { usePluginViewFactory } from '@prosemirror-adapter/react';
-import { install as mblockViewInstall } from './plugin/mblock-view';
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
+import { install as slashMenuBlockViewInstall } from './plugin/slash-menu-block-view';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
-  const block = useBlock();
+
   const slashBlock = useSlashBlock();
   const slashPlus = useSlashPlus();
   const defaultConfig = useEditorDefaultConfig();
@@ -85,7 +85,8 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
           ctx.set(defaultValueCtx, content);
         })
         .use(commonmark);
-      mblockViewInstall(editor, pluginViewFactory);
+      blockViewInstall(editor, pluginViewFactory);
+      slashMenuBlockViewInstall(editor, pluginViewFactory);
       return editor;
     },
 
