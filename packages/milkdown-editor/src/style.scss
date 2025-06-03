@@ -68,6 +68,12 @@
       overflow: auto;
       .milkdown {
         height: 100%;
+       
+        &>div{
+          display: flow-root;
+          height: 100%;
+          outline: none;
+        }
       }
     }
     .md-editor {
@@ -159,8 +165,8 @@ math-field {
   z-index: -1;
 }
 
-.block-view {
-  position: absolute;
+.block-view, .mblock-view {
+  position: fixed;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 
