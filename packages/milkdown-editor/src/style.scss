@@ -11,7 +11,6 @@
 }
 
 .milkdown-editor {
-  
   height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -60,7 +59,7 @@
     pointer-events: none;
   }
 
-  .content {
+  & > .content {
     flex: 1;
     display: flex;
     & > * {
@@ -69,8 +68,8 @@
       .milkdown {
         position: relative;
         height: 100%;
-       
-        &>.ProseMirror{
+
+        & > .ProseMirror {
           display: flow-root;
           height: 100%;
           outline: none;
@@ -130,7 +129,7 @@ math-field {
   }
 }
 
-.slash-view-plus{
+.slash-view-plus {
   width: 200px;
   background-color: #fff;
   border-radius: 4px;
@@ -159,19 +158,18 @@ math-field {
   }
 }
 [data-show='true'] {
-  opacity: 1!important;
+  opacity: 1 !important;
 }
 [data-show='false'] {
   opacity: 0;
-  z-index: -1;
+  z-index: -1!important;
 }
 
-.block-view{
+.block-view {
   z-index: 1000;
   position: fixed;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
-
 
   .block-view-container {
     display: flex;
@@ -189,7 +187,6 @@ math-field {
     }
   }
 }
-
 
 .mblock-view {
   z-index: 1000;
@@ -210,6 +207,52 @@ math-field {
     height: 18px;
     &:hover {
       background-color: #cbd5e1;
+    }
+  }
+}
+
+.slash-menu-block-view {
+  color: rgba($color: #000000, $alpha: 0.8);
+  font-size: 14px;
+  width: 120px;
+  z-index: 1000;
+  position: fixed;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.1);
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #fff;
+  & > {
+    .content {
+      .group{
+        &:first-child{
+          margin-top: 0;
+        }
+        margin-top: 10px;
+        .items{
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 4px;
+          .item{
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid rgba($color: #000000, $alpha: 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            &:hover{
+              background-color: rgba($color: #000000, $alpha: 0.08);
+            }
+            img{
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+      }
     }
   }
 }
