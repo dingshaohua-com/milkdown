@@ -19,6 +19,9 @@ import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 import { install as slashMenuBlockViewInstall } from './plugin/slash-menu-block-view';
+import { tableBlock } from '@milkdown/kit/component/table-block'
+import { gfm } from '@milkdown/kit/preset/gfm'
+// import '@milkdown/theme-nord/style.css'
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
@@ -30,7 +33,7 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const [mdMode, setMdMode] = useState(config.mdMode || false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMdEditorFocused, setIsMdEditorFocused] = useState(false);
-  const [content, setContent] = useState(config.content || 'Hello, Milkdown!');
+  const [content, setContent] = useState(config.content || '');
 
   // const { get } = useEditor((root) => {
   //   const crepe = new Crepe({
@@ -84,7 +87,9 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
           ctx.set(rootCtx, root);
           ctx.set(defaultValueCtx, content);
         })
-        .use(commonmark);
+        .use(commonmark)
+        .use(gfm) // table 配套
+        .use(tableBlock); // table 配套
       blockViewInstall(editor, pluginViewFactory);
       slashMenuBlockViewInstall(editor, pluginViewFactory);
       return editor;

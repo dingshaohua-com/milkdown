@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import MilkdownEditor from '@repo/milkdown-editor';
 
-const contentTemp = `呵呵`;
+const contentTemp = 'hello';
 
 function App() {
   // const [count, setCount] = useState(0);
