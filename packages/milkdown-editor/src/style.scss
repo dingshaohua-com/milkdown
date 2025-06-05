@@ -79,31 +79,55 @@
           height: 100%;
           outline: none;
 
-          table {
-            border-collapse: collapse;
-            margin: 0;
-            overflow: hidden;
-            table-layout: fixed;
-            width: 100%;
+          // table {
+          //   border-collapse: collapse;
+          //   margin: 0;
+          //   overflow: hidden;
+          //   table-layout: fixed;
+          //   width: 100%;
 
-            td,
-            th {
-              border: 2px solid #ced4da;
-              box-sizing: border-box;
-              min-width: 1em;
-              padding: 3px 5px;
-              position: relative;
-              vertical-align: top;
+          //   td,
+          //   th {
+          //     border: 2px solid #ced4da;
+          //     box-sizing: border-box;
+          //     min-width: 1em;
+          //     padding: 3px 5px;
+          //     position: relative;
+          //     vertical-align: top;
 
-              > * {
-                margin-bottom: 0;
-              }
+          //     > * {
+          //       margin-bottom: 0;
+          //     }
+          //   }
+
+          //   th {
+          //     background-color: #f8f9fa;
+          //     font-weight: bold;
+          //     text-align: left;
+          //   }
+          // }
+
+          blockquote {
+            position: relative;
+            padding-left: 40px;
+            padding-top: 0;
+            padding-bottom: 0;
+            box-sizing: content-box;
+            margin: 4px 0;
+      
+            &::before {
+              content: '';
+              width: 4px;
+              left: 0;
+              top: 4px;
+              bottom: 4px;
+              position: absolute;
+              background: #e1e2e8;
+              border-radius: 100px;
             }
-
-            th {
-              background-color: #f8f9fa;
-              font-weight: bold;
-              text-align: left;
+      
+            hr {
+              margin-bottom: 16px;
             }
           }
         }
@@ -209,11 +233,16 @@ math-field {
         &:first-child {
           margin-top: 0;
         }
-        margin-top: 10px;
+        margin-top: 20px;
+        .title{
+          border-bottom: 1px solid rgba($color: #000000, $alpha: 0.08);
+         
+          margin-bottom: 6px;
+        }
         .items {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 4px;
+          gap: 6px;
           .item {
             font-size: 12px;
             cursor: pointer;

@@ -5,16 +5,26 @@ import { Editor } from '@milkdown/kit/core';
 import { useInstance } from '@milkdown/react';
 import { callCommand } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { createTable } from '@milkdown/kit/preset/gfm';
 import { EditorView } from '@milkdown/kit/prose/view';
+import { createTable } from '@milkdown/kit/preset/gfm';
 import { TextSelection } from '@milkdown/kit/prose/state';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Node, ResolvedPos } from '@milkdown/kit/prose/model';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { codeImg, boldImg, tableImg } from '../../utils/img-helper';
 import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
-import { createCodeBlockCommand, toggleStrongCommand, toggleEmphasisCommand } from '@milkdown/kit/preset/commonmark';
+import { createCodeBlockCommand, toggleStrongCommand, listItemSchema, orderedListSchema } from '@milkdown/kit/preset/commonmark';
+import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletListImg, todoListImg, imgImg, latexImg } from '../../utils/img-helper';
+// import {
+//   blockquoteSchema,
+//   bulletListSchema,
+//   codeBlockSchema,
+//   headingSchema,
+//   hrSchema,
+//   listItemSchema,
+//   orderedListSchema,
+//   paragraphSchema,
+// } from '@milkdown/kit/preset/commonmark'
 
 // 首先定义参数类型
 type CreateNodeParams = {
@@ -96,29 +106,6 @@ const View = () => {
     slashProvider.current?.update(view, prevState);
   });
 
-  // const insertTitle1 = (e: React.MouseEvent) => {
-  //   console.log('insertTitle1');
-  //   e.preventDefault();
-
-  //   action((ctx) => {
-  //     const view = ctx.get(editorViewCtx);
-  //     const { dispatch, state } = view;
-  //     const { tr, selection } = state;
-
-  //     const { from } = selection;
-
-  //     if (from === 0) {
-  //       dispatch(tr.deleteRange(0, 0));
-  //     } else {
-  //       dispatch(tr.deleteRange(from - 1, from));
-  //     }
-
-  //     view.focus();
-  //     console.log(from);
-  //     return callCommand(createCodeBlockCommand.key)(ctx);
-  //   });
-  // };
-
   const transformToCode = (e: React.MouseEvent) => {
     e.preventDefault();
     action((ctx) => {
@@ -177,6 +164,68 @@ const View = () => {
     });
   };
 
+  const insertQuote = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('引用');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const quote = state.schema.nodes.blockquote.create(null, paragraph);
+      return quote;
+    });
+  };
+
+  const insertDivider = () => {
+    insertSome(({ ctx, state }) => {
+      const divider = state.schema.nodes.hr.create();
+      const paragraph = state.schema.nodes.paragraph.create();
+      return [divider, paragraph];
+    });
+  };
+
+  const insertOrderList = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('有序列表');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const orderList = orderedListSchema.type(ctx).create(null, paragraph);
+      return orderList;
+    });
+  };
+
+  const insertBulletList = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('有序列表');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const orderList = listItemSchema.type(ctx).create(null, paragraph);
+      return orderList;
+    });
+    
+  };
+
+  const insertTodoList = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('待办列表');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const todoList = listItemSchema.type(ctx).create(null, paragraph);
+      return todoList;
+    });
+  };
+
+  const insertImg = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('图片');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const img = state.schema.nodes.img.create(null, paragraph);
+      return img;
+    });
+  };
+
+  const insertLatex = () => {
+    insertSome(({ ctx, state }) => {
+      const text = state.schema.text('Latex');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const latex = state.schema.nodes.latex.create(null, paragraph);
+      return latex;
+    });
+  };
   return (
     <div className="slash-menu-block-view" ref={ref}>
       <div className="content">
@@ -197,6 +246,27 @@ const View = () => {
             </div>
             <div className="item" onClick={insertTabel}>
               <img src={tableImg} alt="" />
+            </div>
+            <div className="item" onClick={insertQuote}>
+              <img src={quoteImg} alt="" />
+            </div>
+            <div className="item" onClick={insertDivider}>
+              <img src={dividerImg} alt="" />
+            </div>
+            <div className="item" onClick={insertOrderList}>
+              <img src={orderListImg} alt="" />
+            </div>
+            <div className="item" onClick={insertBulletList}>
+              <img src={bulletListImg} alt="" />
+            </div>
+            <div className="item" onClick={insertTodoList}>
+              <img src={todoListImg} alt="" />
+            </div>
+            <div className="item" onClick={insertImg}>
+              <img src={imgImg} alt="" />
+            </div>
+            <div className="item" onClick={insertLatex}>
+              <img src={latexImg} alt="" style={{ height: 12 }}  />
             </div>
           </div>
         </div>
