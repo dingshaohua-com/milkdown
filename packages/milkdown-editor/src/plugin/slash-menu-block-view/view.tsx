@@ -5,6 +5,7 @@ import { Editor } from '@milkdown/kit/core';
 import { useInstance } from '@milkdown/react';
 import { callCommand } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
+import { createTable } from '@milkdown/kit/preset/gfm';
 import { EditorView } from '@milkdown/kit/prose/view';
 import { TextSelection } from '@milkdown/kit/prose/state';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
@@ -14,7 +15,6 @@ import { usePluginViewContext } from '@prosemirror-adapter/react';
 import { codeImg, boldImg, tableImg } from '../../utils/img-helper';
 import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
 import { createCodeBlockCommand, toggleStrongCommand, toggleEmphasisCommand } from '@milkdown/kit/preset/commonmark';
-import { createTable } from '@milkdown/kit/preset/gfm'
 
 // 首先定义参数类型
 type CreateNodeParams = {
@@ -28,11 +28,11 @@ type CreateNodeParams = {
 };
 
 function clearRange(tr: Transaction) {
-  const { $from, $to } = tr.selection
-  const { pos: from } = $from
-  const { pos: to } = $to
-  tr = tr.deleteRange(from - $from.node().content.size, to)
-  return tr
+  const { $from, $to } = tr.selection;
+  const { pos: from } = $from;
+  const { pos: to } = $to;
+  tr = tr.deleteRange(from - $from.node().content.size, to);
+  return tr;
 }
 
 const View = () => {
@@ -133,7 +133,7 @@ const View = () => {
     });
   };
 
-  const insertSome = (creatNode: (params: CreateNodeParams) => Node) => {
+  const insertSome = (creatNode: (params: CreateNodeParams) => Node | Node[]) => {
     const editor = get();
     if (!editor) return;
     const ctx = editor.ctx;
@@ -145,18 +145,19 @@ const View = () => {
     // 获取当前节点结束位置
     const currentNodeendPos = $from.end();
 
-    // 创建一个新节点
+    // 创建一个或多个新节点
     const newNode = creatNode({ editor, ctx, view, state, tr, selection, $from });
+    const nodes = Array.isArray(newNode) ? newNode : [newNode];
 
-    // 插入到当前节点结束位置（即作为下一个节点）
-    tr.insert(currentNodeendPos, newNode);
+    // 插入到当前节点结束位置
+    tr.insert(currentNodeendPos, nodes);
 
     // 设置光标位置
-    const finalPos = tr.doc.resolve(currentNodeendPos + newNode.nodeSize);
+    const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0));
     tr.setSelection(TextSelection.near(finalPos));
-    view.dispatch(tr); // tr为此次事务的对象，必须通过视图对象的dispatch通知，页面才会有更新
+    view.dispatch(tr);
 
-    // 聚焦（在 ProseMirror 中，设置光标位置和聚焦是两个不同的操作）
+    // 聚焦
     view.focus();
   };
 
@@ -169,9 +170,10 @@ const View = () => {
   };
 
   const insertTabel = () => {
-    insertSome(({ ctx }) => {
+    insertSome(({ ctx, state }) => {
       const table = createTable(ctx, 3, 3);
-      return table;
+      const paragraph = state.schema.nodes.paragraph.create();
+      return [table, paragraph];
     });
   };
 
