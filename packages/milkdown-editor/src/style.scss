@@ -130,6 +130,38 @@
               margin-bottom: 16px;
             }
           }
+          ul{
+            display: block;
+            padding: 0;
+            margin: 0;
+            li{
+              padding: 0;
+              margin: 0;
+              display: block;
+              position: relative;
+              padding-left: 20px;
+              &>p{
+                margin: 0;
+                padding: 0;
+              }
+              &::before {
+                content: '';
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background: black;
+                position: absolute;
+                left: 10px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+
+              }
+            }
+          }
+          
+
+         
         }
       }
     }
