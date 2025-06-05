@@ -12,6 +12,7 @@
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
     "@milkdown/kit": "^7.12.1",
+    "@milkdown/plugin-listener": "^7.12.1",
     "@milkdown/react": "^7.12.1",
     "@milkdown/theme-nord": "^7.12.1",
     "@monaco-editor/react": "^4.7.0",

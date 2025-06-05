@@ -6,28 +6,24 @@ import { EditorConfig } from '../global';
 // import '@milkdown/crepe/theme/frame.css'; // 一个完整主题（可选，其它可选项见下）
 import { useState, useEffect } from 'react';
 import { nord } from '@milkdown/theme-nord';
+import { gfm } from '@milkdown/kit/preset/gfm';
 // import '@milkdown/crepe/theme/common/style.css'; // 基础样式（必需）
 import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
-import { useSlashPlus } from './plugin/slash-menu-plus';
-import { useSlashBlock } from './plugin/slash-menu-block';
 import { commonmark } from '@milkdown/kit/preset/commonmark';
+import { tableBlock } from '@milkdown/kit/component/table-block';
 import { install as blockViewInstall } from './plugin/block-view';
+// import '@milkdown/theme-nord/style.css'
+import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { usePluginViewFactory } from '@prosemirror-adapter/react';
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 import { install as slashMenuBlockViewInstall } from './plugin/slash-menu-block-view';
-import { tableBlock } from '@milkdown/kit/component/table-block'
-import { gfm } from '@milkdown/kit/preset/gfm'
-// import '@milkdown/theme-nord/style.css'
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
-
-  const slashBlock = useSlashBlock();
-  const slashPlus = useSlashPlus();
   const defaultConfig = useEditorDefaultConfig();
   const config = { ...defaultConfig, ...props };
   const [mdMode, setMdMode] = useState(config.mdMode || false);
@@ -35,70 +31,37 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const [isMdEditorFocused, setIsMdEditorFocused] = useState(false);
   const [content, setContent] = useState(config.content || '');
 
-  // const { get } = useEditor((root) => {
-  //   const crepe = new Crepe({
-  //     root,
-  //     defaultValue: content,
-  //     features: {
-  //       'block-edit': false,
-  //     },
-  //   });
-  //   crepe.on((listener) => {
-  //     listener.selectionUpdated((ctx) => {
-  //       const editorViewCtxVal = ctx.get(editorViewCtx);
-  //       if (editorViewCtxVal.hasFocus && editorViewCtxVal.hasFocus()) {
-  //         emitter.emit('selectionUpdated' as never);
-  //       }
-  //     });
-  //     listener.markdownUpdated((ctx, markdown) => {
-  //       const isFocused = ctx.get(editorViewCtx).hasFocus();
-  //       if (isFocused) {
-  //         setContent(markdown);
-  //         config.onChange && config.onChange(markdown);
-  //       }
-  //     });
-  //   });
-  //   crepe.editor
-  //     .config((ctx: any) => {
-  //       slashBlock.config(ctx);
-  //     })
-  //     .use(slashBlock.plugin);
-
-  //   crepe.editor
-  //     .config((ctx: any) => {
-  //       slashPlus.config(ctx);
-  //     })
-  //     .use(slashPlus.plugin);
-
-  //   crepe.editor
-  //     .config((ctx: any) => {
-  //       block.config(ctx);
-  //     })
-  //     .use(block.plugin);
-
-  //   return crepe;
-  // });
-
-  const { get, loading } = useEditor(
-    (root) => {
-      const editor = Editor.make()
-        .config(nord)
-        .config((ctx) => {
-          ctx.set(rootCtx, root);
-          ctx.set(defaultValueCtx, content);
-        })
-        .use(commonmark)
-        .use(gfm) // table 配套
-        .use(tableBlock); // table 配套
-      blockViewInstall(editor, pluginViewFactory);
-      slashMenuBlockViewInstall(editor, pluginViewFactory);
-      return editor;
-    },
-
-    // .then(() => {
-    //   console.log("Editor created");
-    // })
-  );
+  const { get, loading } = useEditor((root) => {
+    const editor = Editor.make()
+      .config(nord)
+      .config((ctx) => {
+        ctx.set(rootCtx, root);
+        ctx.set(defaultValueCtx, content);
+        ctx
+          .get(listenerCtx)
+          .markdownUpdated((ctx, markdown) => {
+            const isFocused = ctx.get(editorViewCtx).hasFocus();
+            if (isFocused) {
+              setContent(markdown);
+              config.onChange && config.onChange(markdown);
+            }
+          })
+          .selectionUpdated((ctx) => {
+            const editorViewCtxVal = ctx.get(editorViewCtx);
+            if (editorViewCtxVal.hasFocus && editorViewCtxVal.hasFocus()) {
+              console.log(111222);
+              emitter.emit('selectionUpdated' as never);
+            }
+          });
+      })
+      .use(listener)
+      .use(commonmark)
+      .use(gfm) // table 配套
+      .use(tableBlock); // table 配套
+    blockViewInstall(editor, pluginViewFactory);
+    slashMenuBlockViewInstall(editor, pluginViewFactory);
+    return editor;
+  });
 
   const editor = get();
 
@@ -118,7 +81,7 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       editorView.dom.removeEventListener('focus', () => {});
       editorView.dom.removeEventListener('blur', () => {});
     };
-  }, [get]);
+  }, [loading]);
 
   const handleMdEditorChange = (content: string) => {
     setContent(content);

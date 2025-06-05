@@ -78,6 +78,9 @@ importers:
       '@milkdown/kit':
         specifier: ^7.12.1
         version: 7.12.1(@codemirror/language@6.11.1)(@codemirror/state@6.5.2)(@codemirror/view@6.37.1)(typescript@5.8.3)
+      '@milkdown/plugin-listener':
+        specifier: ^7.12.1
+        version: 7.12.1
       '@milkdown/react':
         specifier: ^7.12.1
         version: 7.12.1(@codemirror/language@6.11.1)(@codemirror/state@6.5.2)(@codemirror/view@6.37.1)(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.40.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)

@@ -24,6 +24,7 @@ type CreateNodeParams = {
   tr: Transaction;
   selection: Selection;
   $from: ResolvedPos;
+  ctx: Ctx;
 };
 
 function clearRange(tr: Transaction) {
@@ -135,7 +136,8 @@ const View = () => {
   const insertSome = (creatNode: (params: CreateNodeParams) => Node) => {
     const editor = get();
     if (!editor) return;
-    const view = editor.ctx.get(editorViewCtx);
+    const ctx = editor.ctx;
+    const view = ctx.get(editorViewCtx);
     const { state } = view;
     const { tr, selection } = state;
     const { $from } = selection;
@@ -144,7 +146,7 @@ const View = () => {
     const currentNodeendPos = $from.end();
 
     // 创建一个新节点
-    const newNode = creatNode({ editor, view, state, tr, selection, $from });
+    const newNode = creatNode({ editor, ctx, view, state, tr, selection, $from });
 
     // 插入到当前节点结束位置（即作为下一个节点）
     tr.insert(currentNodeendPos, newNode);
@@ -167,29 +169,30 @@ const View = () => {
   };
 
   const insertTabel = () => {
-    // insertSome(({ state }) => {
-
-    // });
-    const editor = get();
-    if (!editor) return;
-
-    const view = editor.ctx.get(editorViewCtx);
-    const { dispatch, state } = view;
-    let { tr } = state;
-    // tr = clearRange(tr);
-    const from = tr.selection.from;
-    const table = createTable(editor.ctx, 3, 3);
-    tr = tr.replaceSelectionWith(table);
-    dispatch(tr);
-
-    requestAnimationFrame(() => {
-      const docSize = view.state.doc.content.size;
-      const $pos = view.state.doc.resolve(from > docSize ? docSize : from < 0 ? 0 : from);
-      const selection = TextSelection.near($pos);
-      const tr = view.state.tr;
-      tr.setSelection(selection);
-      dispatch(tr.scrollIntoView());
+    insertSome(({ ctx }) => {
+      const table = createTable(ctx, 3, 3);
+      return table;
     });
+    // const editor = get();
+    // if (!editor) return;
+
+    // const view = editor.ctx.get(editorViewCtx);
+    // const { dispatch, state } = view;
+    // let { tr } = state;
+    // // tr = clearRange(tr);
+    // const from = tr.selection.from;
+    // const table = createTable(editor.ctx, 3, 3);
+    // tr = tr.replaceSelectionWith(table);
+    // dispatch(tr);
+
+    // requestAnimationFrame(() => {
+    //   const docSize = view.state.doc.content.size;
+    //   const $pos = view.state.doc.resolve(from > docSize ? docSize : from < 0 ? 0 : from);
+    //   const selection = TextSelection.near($pos);
+    //   const tr = view.state.tr;
+    //   tr.setSelection(selection);
+    //   dispatch(tr.scrollIntoView());
+    // });
   };
 
   return (
