@@ -151,7 +151,7 @@ const View = () => {
     // 插入到当前节点结束位置（即作为下一个节点）
     tr.insert(currentNodeendPos, newNode);
 
-    // 设置光标位置（加2是因为要计算新节点的起始占位标记长度）
+    // 设置光标位置
     const finalPos = tr.doc.resolve(currentNodeendPos + newNode.nodeSize);
     tr.setSelection(TextSelection.near(finalPos));
     view.dispatch(tr); // tr为此次事务的对象，必须通过视图对象的dispatch通知，页面才会有更新
@@ -173,26 +173,6 @@ const View = () => {
       const table = createTable(ctx, 3, 3);
       return table;
     });
-    // const editor = get();
-    // if (!editor) return;
-
-    // const view = editor.ctx.get(editorViewCtx);
-    // const { dispatch, state } = view;
-    // let { tr } = state;
-    // // tr = clearRange(tr);
-    // const from = tr.selection.from;
-    // const table = createTable(editor.ctx, 3, 3);
-    // tr = tr.replaceSelectionWith(table);
-    // dispatch(tr);
-
-    // requestAnimationFrame(() => {
-    //   const docSize = view.state.doc.content.size;
-    //   const $pos = view.state.doc.resolve(from > docSize ? docSize : from < 0 ? 0 : from);
-    //   const selection = TextSelection.near($pos);
-    //   const tr = view.state.tr;
-    //   tr.setSelection(selection);
-    //   dispatch(tr.scrollIntoView());
-    // });
   };
 
   return (
