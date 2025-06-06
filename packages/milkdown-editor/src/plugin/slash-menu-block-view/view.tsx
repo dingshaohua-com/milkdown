@@ -7,17 +7,16 @@ import { useInstance } from '@milkdown/react';
 import { callCommand } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
 import { EditorView } from '@milkdown/kit/prose/view';
-import { clearContentAndSetBlockType, insertSome } from './helper';
 import { createTable } from '@milkdown/kit/preset/gfm';
 import { TextSelection } from '@milkdown/kit/prose/state';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Node, ResolvedPos } from '@milkdown/kit/prose/model';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
+import { clearContentAndSetBlockType, insertSome } from './helper';
 import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
 import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletListImg, todoListImg, imgImg, latexImg } from '../../utils/img-helper';
 import { createCodeBlockCommand, toggleStrongCommand, blockquoteSchema, bulletListSchema, codeBlockSchema, headingSchema, hrSchema, listItemSchema, orderedListSchema, paragraphSchema } from '@milkdown/kit/preset/commonmark';
-
 
 const View = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,7 +56,7 @@ const View = () => {
 
   const initializeApi = useCallback(() => {
     if (!editor || initialized.current) return;
-    
+
     try {
       editor.ctx.set(api.key, {
         show: () => show(),
@@ -113,7 +112,6 @@ const View = () => {
     });
   };
 
-
   const insertHeading = (level: number) => {
     insertSome(editor, ({ state }) => {
       const text = state.schema.text('标题');
@@ -147,26 +145,28 @@ const View = () => {
     });
   };
 
+  const insertBulletList = () => {
+    insertSome(editor, ({ ctx, state }) => {
+      const text = state.schema.text('无序列表');
+      const paragraph = state.schema.nodes.paragraph.create(null, text);
+      const listItem = listItemSchema.type(ctx).create(null, paragraph);
+      const bulletList = bulletListSchema.type(ctx).create(null, listItem);
+      return bulletList;
+    });
+  };
+
   const insertOrderList = () => {
     insertSome(editor, ({ ctx, state }) => {
       const text = state.schema.text('有序列表');
       const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const orderList = orderedListSchema.type(ctx).create(null, paragraph);
-      return orderList;
-    });
-  };
-
-  const insertBulletList = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('有序列表');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const orderList = listItemSchema.type(ctx).create(null, paragraph);
+      const listItem = listItemSchema.type(ctx).create(null, paragraph);
+      const orderList = orderedListSchema.type(ctx).create(null, listItem);
       return orderList;
     });
   };
 
   const insertTodoList = () => {
-    insertSome(editor,({ ctx, state }) => {
+    insertSome(editor, ({ ctx, state }) => {
       const text = state.schema.text('待办列表');
       const paragraph = state.schema.nodes.paragraph.create(null, text);
       const todoList = listItemSchema.type(ctx).create(null, paragraph);
@@ -175,7 +175,7 @@ const View = () => {
   };
 
   const insertImg = () => {
-    insertSome(editor,({ ctx, state }) => {
+    insertSome(editor, ({ ctx, state }) => {
       const text = state.schema.text('图片');
       const paragraph = state.schema.nodes.paragraph.create(null, text);
       const img = state.schema.nodes.img.create(null, paragraph);
@@ -184,7 +184,7 @@ const View = () => {
   };
 
   const insertLatex = () => {
-    insertSome(editor,({ ctx, state }) => {
+    insertSome(editor, ({ ctx, state }) => {
       const text = state.schema.text('Latex');
       const paragraph = state.schema.nodes.paragraph.create(null, text);
       const latex = state.schema.nodes.latex.create(null, paragraph);
@@ -218,12 +218,13 @@ const View = () => {
             <div className="item" onClick={insertDivider}>
               <img src={dividerImg} alt="" />
             </div>
-            <div className="item" onClick={insertOrderList}>
-              <img src={orderListImg} alt="" />
-            </div>
             <div className="item" onClick={insertBulletList}>
               <img src={bulletListImg} alt="" />
             </div>
+            <div className="item" onClick={insertOrderList}>
+              <img src={orderListImg} alt="" />
+            </div>
+
             <div className="item" onClick={insertTodoList}>
               <img src={todoListImg} alt="" />
             </div>
