@@ -24,16 +24,12 @@ const View = () => {
     const pos = view.coordsAtPos($anchor.pos);
     ref.current.style.top = `${pos.top + 30}px`;
     ref.current.style.left = `${pos.left - 40}px`;
-    setTimeout(() => {
-      slashProvider.current?.show();
-    }, 200);
+    slashProvider.current?.show();
   };
 
   const initializeApi = useCallback(() => {
     try {
-      // if (editor.ctx.get(api.key)) {
-      //   return;
-      // }
+      // if (editor.ctx.get(api.key))  return;
       editor.ctx.set(api.key, {
         show: () => show(),
         hide: () => hide(),
@@ -52,16 +48,28 @@ const View = () => {
       trigger: '',
     });
 
+    // 添加全局点击事件监听
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (div && !div.contains(target)) {
+        hide();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       slashProvider.current?.destroy();
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [loading]);
 
-  useEffect(() => {
-    if (view && prevState && slashProvider.current) {
-      slashProvider.current.update(view, prevState);
-    }
-  }, [view, prevState]);
+  // 禁用更新
+  // useEffect(() => {
+  //   if (view && prevState && slashProvider.current) {
+  //     slashProvider.current.update(view, prevState);
+  //   }
+  // }, [view, prevState]);
 
   const insertPosNodes = [
     {
