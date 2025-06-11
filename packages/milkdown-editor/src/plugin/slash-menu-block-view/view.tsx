@@ -51,14 +51,17 @@ const View = () => {
       content: div,
       trigger: '',
     });
+
     return () => {
       slashProvider.current?.destroy();
     };
   }, [loading]);
 
   useEffect(() => {
-    slashProvider.current?.update(view, prevState);
-  });
+    if (view && prevState && slashProvider.current) {
+      slashProvider.current.update(view, prevState);
+    }
+  }, [view, prevState]);
 
   const insertPosNodes = [
     {
@@ -94,7 +97,7 @@ const View = () => {
             插到
             <div className="title-radios">
               {insertPosNodes.map((it) => (
-                <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={() => onInsertPosClick(it)} key={it.value} onMouseDownCapture={(e) => e.stopPropagation()}>
+                <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={(e) => onInsertPosClick(it)} key={it.value}>
                   {it.label}
                 </div>
               ))}
