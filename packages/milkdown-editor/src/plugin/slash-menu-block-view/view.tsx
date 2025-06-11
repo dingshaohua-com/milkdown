@@ -1,46 +1,29 @@
+import cs from 'classnames';
 import { api } from './index';
 import { slash } from './index';
 import { creatNodeFn } from './type';
 import { Ctx } from '@milkdown/kit/ctx';
-import { Editor } from '@milkdown/kit/core';
-import { useInstance } from '@milkdown/react';
-import { callCommand } from '@milkdown/kit/utils';
-import { editorViewCtx } from '@milkdown/kit/core';
-import { EditorView } from '@milkdown/kit/prose/view';
-import { createTable } from '@milkdown/kit/preset/gfm';
-import { TextSelection } from '@milkdown/kit/prose/state';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
-import React, { useCallback, useEffect, useRef } from 'react';
+import useEditorHelper from '../../utils/editor-helper/hook';
 import { Node, ResolvedPos } from '@milkdown/kit/prose/model';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { clearContentAndSetBlockType, insertSome } from './helper';
 import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletListImg, todoListImg, imgImg, latexImg } from '../../utils/img-helper';
-import { createCodeBlockCommand, toggleStrongCommand, blockquoteSchema, bulletListSchema, codeBlockSchema, headingSchema, hrSchema, listItemSchema, orderedListSchema, paragraphSchema } from '@milkdown/kit/preset/commonmark';
 
 const View = () => {
+  const { editor, insert, loading } = useEditorHelper();
+  if (!insert) return null;
+
   const ref = useRef<HTMLDivElement>(null);
   const slashProvider = useRef<SlashProvider>(null);
-  const initialized = useRef(false);
-
   const { view, prevState } = usePluginViewContext();
-  const [loading, get] = useInstance();
-
-  const editor: Editor = get()!;
-  const action = useCallback(
-    (fn: (ctx: Ctx) => void) => {
-      if (loading) return;
-      get().action(fn);
-    },
-    [loading],
-  );
 
   const show = () => {
-    console.log('show');
-
+    console.log(123);
+    
     if (!view || !ref.current) return;
-    const { state } = view;
-    const { selection } = state;
+    const { selection } = view.state;
     const { $anchor } = selection;
     const pos = view.coordsAtPos($anchor.pos);
     ref.current.style.top = `${pos.top + 30}px`;
@@ -49,148 +32,71 @@ const View = () => {
       slashProvider.current?.show();
     }, 200);
   };
-  const hide = () => {
-    console.log('hide');
-    slashProvider.current?.hide();
-  };
 
+  const hide = () => slashProvider.current?.hide();
+
+  const initialized = useRef(false);
   const initializeApi = useCallback(() => {
-    if (!editor || initialized.current) return;
+    // if (initialized.current) return;
 
     try {
+      // if (editor.ctx.get(api.key)) {
+      //   return;
+      // }
       editor.ctx.set(api.key, {
         show: () => show(),
         hide: () => hide(),
       });
-      initialized.current = true;
+      console.log(editor.ctx.get(api.key))
+     
+      initialized.current = true
     } catch (e) {
       // console.warn('HRM会导致 初始化api失败，这是正常现象:', e);
     }
   }, [editor]);
 
   useEffect(() => {
+    initializeApi();
     const div = ref.current;
-    if (loading || !div) {
-      return;
-    }
+    if (loading || !div) return;
     slashProvider.current = new SlashProvider({
       content: div,
       trigger: '',
-      //   offset: 100,
     });
-
-    initializeApi();
-
     return () => {
       slashProvider.current?.destroy();
       initialized.current = false;
     };
-  }, [loading, initializeApi]);
+  }, [loading]);
 
-  // 添加一个额外的 effect 来处理热更新
-  useEffect(() => {
-    if (!loading && editor) {
-      initializeApi();
-    }
-  }, [editor, loading, initializeApi]);
 
   useEffect(() => {
     slashProvider.current?.update(view, prevState);
   });
 
-  const transformToCode = (e: React.MouseEvent) => {
-    e.preventDefault();
-    action((ctx) => {
-      return callCommand(createCodeBlockCommand.key)(ctx);
-    });
+  const insertPosNodes = [
+    {
+      label: '下',
+      value: 'bottom',
+    },
+    {
+      label: '中',
+      value: 'center',
+    },
+    {
+      label: '上',
+      value: 'top',
+    },
+  ];
+
+  const [insertPosVal, setInsertPosVal] = useState('bottom');
+  const onClick = (item: any) => {
+    setInsertPosVal(item.value);
   };
 
-  const transformToBold = (e: React.MouseEvent) => {
-    e.preventDefault();
-    action((ctx) => {
-      return callCommand(toggleStrongCommand.key)(ctx);
-    });
-  };
-
-  const insertHeading = (level: number) => {
-    insertSome(editor, ({ state }) => {
-      const text = state.schema.text('标题');
-      const node = state.schema.nodes.heading.create({ level: level }, text);
-      return node;
-    });
-  };
-
-  const insertTabel = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const table = createTable(ctx, 3, 3);
-      const paragraph = state.schema.nodes.paragraph.create();
-      return [table, paragraph];
-    });
-  };
-
-  const insertQuote = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('引用');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const quote = state.schema.nodes.blockquote.create(null, paragraph);
-      return quote;
-    });
-  };
-
-  const insertDivider = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const divider = state.schema.nodes.hr.create();
-      const paragraph = state.schema.nodes.paragraph.create();
-      return [divider, paragraph];
-    });
-  };
-
-  const insertBulletList = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('无序列表');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const listItem = listItemSchema.type(ctx).create(null, paragraph);
-      const bulletList = bulletListSchema.type(ctx).create(null, listItem);
-      return bulletList;
-    });
-  };
-
-  const insertOrderList = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('有序列表');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const listItem = listItemSchema.type(ctx).create(null, paragraph);
-      const orderList = orderedListSchema.type(ctx).create(null, listItem);
-      return orderList;
-    });
-  };
-
-  const insertTodoList = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('待办列表');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const todoList = listItemSchema.type(ctx).create(null, paragraph);
-      return todoList;
-    });
-  };
-
-  const insertImg = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('图片');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const img = state.schema.nodes.img.create(null, paragraph);
-      return img;
-    });
-  };
-
-  const insertLatex = () => {
-    insertSome(editor, ({ ctx, state }) => {
-      const text = state.schema.text('Latex');
-      const paragraph = state.schema.nodes.paragraph.create(null, text);
-      const latex = state.schema.nodes.latex.create(null, paragraph);
-      return latex;
-    });
-  };
+  if (!editor) {
+    return null;
+  }
   return (
     <div className="slash-menu-block-view" ref={ref}>
       <div className="content">
@@ -198,46 +104,55 @@ const View = () => {
           删除
         </div> */}
         <div className="group">
-          <div className="title">在下方插入</div>
+          <div className="title">
+            插到
+            <div className="title-radios">
+              {insertPosNodes.map((it) => (
+                <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={() => onClick(it)} key={it.value} onMouseDownCapture={(e) => e.stopPropagation()}>
+                  {it.label}
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="items">
-            <div className="item" onClick={() => insertHeading(1)}>
+            <div className="item" onClick={insert.h1}>
               H1
             </div>
-            <div className="item" onClick={() => insertHeading(2)}>
+            <div className="item" onClick={insert.h2}>
               H2
             </div>
-            <div className="item" onClick={() => insertHeading(3)}>
+            <div className="item" onClick={insert.h3}>
               H3
             </div>
-            <div className="item" onClick={insertTabel}>
+            <div className="item" onClick={insert.tabel}>
               <img src={tableImg} alt="" />
             </div>
-            <div className="item" onClick={insertQuote}>
+            <div className="item" onClick={insert.quote}>
               <img src={quoteImg} alt="" />
             </div>
-            <div className="item" onClick={insertDivider}>
+            <div className="item" onClick={insert.divider}>
               <img src={dividerImg} alt="" />
             </div>
-            <div className="item" onClick={insertBulletList}>
+            <div className="item" onClick={insert.bulletList}>
               <img src={bulletListImg} alt="" />
             </div>
-            <div className="item" onClick={insertOrderList}>
+            <div className="item" onClick={insert.orderList}>
               <img src={orderListImg} alt="" />
             </div>
 
-            <div className="item" onClick={insertTodoList}>
+            <div className="item" onClick={insert.todoList}>
               <img src={todoListImg} alt="" />
             </div>
-            <div className="item" onClick={insertImg}>
+            <div className="item" onClick={insert.img}>
               <img src={imgImg} alt="" />
             </div>
-            <div className="item" onClick={insertLatex}>
+            <div className="item" onClick={insert.latex}>
               <img src={latexImg} alt="" style={{ height: 12 }} />
             </div>
           </div>
         </div>
 
-        <div className="group">
+        {/* <div className="group">
           <div className="title">转换为</div>
           <div className="items">
             <div className="item">
@@ -247,7 +162,7 @@ const View = () => {
               <img src={codeImg} alt="" onClick={transformToCode} />
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* <div className="slash-view-content-item" onClick={insertTitle1}>
           转换为代码

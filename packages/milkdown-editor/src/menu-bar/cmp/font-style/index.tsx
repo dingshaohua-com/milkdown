@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import emitter from '../../../utils/emitter';
 import type { Editor } from '@milkdown/kit/core';
 import { useEditorConfig } from '../../../config-ctx';
-import { checkMarkActive } from '../../../utils/editor-helper';
+import { checkMarkActive } from '../../../utils/editor-helper1';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { toggleMark, setBlockType } from '@milkdown/kit/prose/commands';
 import { commandsCtx, editorStateCtx, schemaCtx } from '@milkdown/kit/core';

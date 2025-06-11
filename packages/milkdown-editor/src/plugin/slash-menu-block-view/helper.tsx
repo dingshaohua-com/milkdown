@@ -37,33 +37,3 @@ export const clearContentAndSetBlockType: ClearContentAndSetBlockTypeFn = (nodeT
 // command(state, dispatch);
 
 
-
-
-export const insertSome = (editor: Editor, creatNode: creatNodeFn) => {
-  if (!editor) return;
-  const ctx = editor.ctx;
-  const view = ctx.get(editorViewCtx);
-  const { state } = view;
-  const { tr, selection } = state;
-  const { $from } = selection;
-
-  // 获取当前节点结束位置
-  const currentNodeendPos = $from.end();
-
-  // 创建一个或多个新节点
-  const newNode = creatNode({ editor, ctx, view, state, tr, selection, $from });
-  const nodes = newNode ? (Array.isArray(newNode) ? newNode : [newNode]) : [];
-
-  if (nodes.length > 0) {
-    // 插入到当前节点结束位置
-    tr.insert(currentNodeendPos, nodes);
-
-    // 设置光标位置
-    const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0));
-    tr.setSelection(TextSelection.near(finalPos));
-    view.dispatch(tr);
-
-    // 聚焦
-    view.focus();
-  }
-};
