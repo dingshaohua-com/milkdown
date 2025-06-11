@@ -14,17 +14,13 @@ import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletL
 const View = () => {
   const { editor, insert, loading } = useEditorHelper();
   if (!insert) return null;
-
   const ref = useRef<HTMLDivElement>(null);
   const slashProvider = useRef<SlashProvider>(null);
   const { view, prevState } = usePluginViewContext();
-
+  const hide = () => slashProvider.current?.hide();
   const show = () => {
-    console.log(123);
-    
     if (!view || !ref.current) return;
-    const { selection } = view.state;
-    const { $anchor } = selection;
+    const { $anchor } = view.state.selection;
     const pos = view.coordsAtPos($anchor.pos);
     ref.current.style.top = `${pos.top + 30}px`;
     ref.current.style.left = `${pos.left - 40}px`;
@@ -33,12 +29,7 @@ const View = () => {
     }, 200);
   };
 
-  const hide = () => slashProvider.current?.hide();
-
-  const initialized = useRef(false);
   const initializeApi = useCallback(() => {
-    // if (initialized.current) return;
-
     try {
       // if (editor.ctx.get(api.key)) {
       //   return;
@@ -47,9 +38,6 @@ const View = () => {
         show: () => show(),
         hide: () => hide(),
       });
-      console.log(editor.ctx.get(api.key))
-     
-      initialized.current = true
     } catch (e) {
       // console.warn('HRM会导致 初始化api失败，这是正常现象:', e);
     }
@@ -65,10 +53,8 @@ const View = () => {
     });
     return () => {
       slashProvider.current?.destroy();
-      initialized.current = false;
     };
   }, [loading]);
-
 
   useEffect(() => {
     slashProvider.current?.update(view, prevState);
@@ -90,7 +76,7 @@ const View = () => {
   ];
 
   const [insertPosVal, setInsertPosVal] = useState('bottom');
-  const onClick = (item: any) => {
+  const onInsertPosClick = (item: any) => {
     setInsertPosVal(item.value);
   };
 
@@ -108,7 +94,7 @@ const View = () => {
             插到
             <div className="title-radios">
               {insertPosNodes.map((it) => (
-                <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={() => onClick(it)} key={it.value} onMouseDownCapture={(e) => e.stopPropagation()}>
+                <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={() => onInsertPosClick(it)} key={it.value} onMouseDownCapture={(e) => e.stopPropagation()}>
                   {it.label}
                 </div>
               ))}

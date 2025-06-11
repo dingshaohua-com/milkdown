@@ -18,10 +18,10 @@ export const api: any = $ctx(null,'smBlockViewApi');
 export const install = (editor: any, pluginViewFactory: any) => {
   editor
     .config((ctx: any) => {
-      ctx.set(api.key, {
-        show: () => {},
-        hide: () => {}
-      });
+      // ctx.set(api.key, {
+      //   show: () => {},
+      //   hide: () => {}
+      // });
       ctx.set(slash.key, {
         view: pluginViewFactory({
           component: View,
