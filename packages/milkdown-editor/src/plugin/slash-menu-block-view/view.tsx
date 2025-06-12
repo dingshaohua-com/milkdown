@@ -12,7 +12,13 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletListImg, todoListImg, imgImg, latexImg } from '../../utils/img-helper';
 
 const View = () => {
-  const { editor, insert, loading } = useEditorHelper();
+  const [insertPosVal, setInsertPosVal] = useState('bottom');
+  const { editor, insert, loading } = useEditorHelper({
+    afterAction: () => {
+      hide();
+    },
+    insertPos: insertPosVal,
+  });
   if (!insert) return null;
   const ref = useRef<HTMLDivElement>(null);
   const slashProvider = useRef<SlashProvider>(null);
@@ -86,7 +92,7 @@ const View = () => {
     },
   ];
 
-  const [insertPosVal, setInsertPosVal] = useState('bottom');
+ 
   const onInsertPosClick = (item: any) => {
     setInsertPosVal(item.value);
   };

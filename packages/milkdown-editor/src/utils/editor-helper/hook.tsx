@@ -4,9 +4,35 @@ import { useInstance } from '@milkdown/react';
 import InsertHelper from './helper';
 import { useMemo } from 'react';
 
-const useEditorHelper = () => {
+type UseEditorHelperProps = {
+  afterAction?: () => void;
+  insertPos?: string;
+};
+
+type UseEditorHelperReturn = {
+  editor: Editor | null;
+  loading: boolean;
+  insert?: {
+    h1: () => void;
+    h2: () => void;
+    h3: () => void;
+    tabel: () => void;
+    quote: () => void;
+    divider: () => void;
+    bulletList: () => void;
+    orderList: () => void;
+    todoList: () => void;
+    img: () => void;
+    latex: () => void;
+  };
+};
+
+const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => {
   const [loading, get] = useInstance();
   const editor: Editor = get()!;
+
+  console.log(props.insertPos);
+  
 
   if (!editor) {
     return { editor, loading };
@@ -22,17 +48,50 @@ const useEditorHelper = () => {
   // 使用 useMemo 缓存带参数的函数，以及保持作用域
   const insert = useMemo(
     () => ({
-      h1: () => insertHelper.insertHeading(1),
-      h2: () => insertHelper.insertHeading(2),
-      h3: () => insertHelper.insertHeading(3),
-      tabel: () => insertHelper.insertTabel(),
-      quote: () => insertHelper.insertQuote(),
-      divider: () => insertHelper.insertDivider(),
-      bulletList: () => insertHelper.insertBulletList(),
-      orderList: () => insertHelper.insertOrderList(),
-      todoList: () => insertHelper.insertTodoList(),
-      img: () => insertHelper.insertImg(),
-      latex: () => insertHelper.insertLatex(),
+      h1: () => {
+        insertHelper.insertHeading(1);
+        props.afterAction && props.afterAction();
+      },
+      h2: () => {
+        insertHelper.insertHeading(2);
+        props.afterAction && props.afterAction();
+      },
+      h3: () => {
+        insertHelper.insertHeading(3);
+        props.afterAction && props.afterAction();
+      },
+      tabel: () => {
+        insertHelper.insertTabel();
+        props.afterAction && props.afterAction();
+      },
+      quote: () => {
+        insertHelper.insertQuote();
+        props.afterAction && props.afterAction();
+      },
+      divider: () => {
+        insertHelper.insertDivider();
+        props.afterAction && props.afterAction();
+      },
+      bulletList: () => {
+        insertHelper.insertBulletList();
+        props.afterAction && props.afterAction();
+      },
+      orderList: () => {
+        insertHelper.insertOrderList();
+        props.afterAction && props.afterAction();
+      },
+      todoList: () => {
+        insertHelper.insertTodoList();
+        props.afterAction && props.afterAction();
+      },
+      img: () => {
+        insertHelper.insertImg();
+        props.afterAction && props.afterAction();
+      },
+      latex: () => {
+        insertHelper.insertLatex();
+        props.afterAction && props.afterAction();
+      },
     }),
     [insertHelper],
   );
