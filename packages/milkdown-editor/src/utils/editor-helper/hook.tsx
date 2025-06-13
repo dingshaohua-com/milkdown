@@ -45,6 +45,7 @@ const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => 
 
   // 因为做了单例，所以这里不用 useRef来保持引用
   let insertHelper: InsertHelper = InsertHelper.getInstance(editor);
+  insertHelper.setInsertPos(props.insertPos || 'bottom');
   // 使用 useMemo 缓存带参数的函数，以及保持作用域
   const insert = useMemo(
     () => ({
