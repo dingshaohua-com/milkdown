@@ -277,9 +277,16 @@ math-field {
   top: 100px;
   & > {
     .content {
-      .slash-view-content-item{
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+      .slash-view-content-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
         cursor: pointer;
-        &:hover{
+        &:hover {
           background-color: rgba($color: #000000, $alpha: 0.02);
         }
       }
@@ -298,7 +305,7 @@ math-field {
           .title-radios {
             overflow: hidden;
             cursor: pointer;
-            border:rgba($color: #000000, $alpha: 0.08) solid 1px ;
+            border: rgba($color: #000000, $alpha: 0.08) solid 1px;
             border-radius: 10px;
             display: flex;
             font-size: 12px;
@@ -311,7 +318,7 @@ math-field {
               align-items: center;
               justify-content: center;
             }
-            .active{
+            .active {
               background-color: #000000;
               color: white;
             }
@@ -322,6 +329,7 @@ math-field {
           grid-template-columns: repeat(3, 1fr);
           gap: 6px;
           .item {
+            box-sizing: border-box;
             font-size: 12px;
             cursor: pointer;
             border: 1px solid rgba($color: #000000, $alpha: 0.08);
@@ -329,12 +337,9 @@ math-field {
             align-items: center;
             justify-content: center;
             border-radius: 4px;
+            padding: 4px;
             &:hover {
               background-color: rgba($color: #000000, $alpha: 0.08);
-            }
-            img {
-              width: 16px;
-              height: 16px;
             }
           }
         }
@@ -343,7 +348,30 @@ math-field {
   }
 }
 
-
-.absolute{
+.absolute {
   position: absolute;
+}
+
+.slash-menu-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 4px;
+
+  .item {
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.08);
+    }
+    box-sizing: border-box;
+    height: 100%;
+    padding: 6px 2px;
+    svg {
+      height: 100%;
+    }
+  }
 }
