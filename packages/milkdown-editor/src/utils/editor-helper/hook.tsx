@@ -2,7 +2,7 @@ import { useEditor } from '@milkdown/react';
 import { Editor } from '@milkdown/kit/core';
 import { useInstance } from '@milkdown/react';
 import InsertHelper from './helper';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 type UseEditorHelperProps = {
   afterAction?: () => void;
@@ -25,6 +25,7 @@ type UseEditorHelperReturn = {
     img: () => void;
     latex: () => void;
   };
+  deleteNode?: () => void;
 };
 
 const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => {
@@ -97,7 +98,13 @@ const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => 
     [insertHelper],
   );
 
-  return { editor, insert, loading };
+  const deleteNode = useCallback(() => {
+    insertHelper.deleteNode();
+  }, [insertHelper]);
+
+
+
+  return { editor, loading, insert, deleteNode };
 };
 
 export default useEditorHelper;

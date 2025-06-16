@@ -21,6 +21,7 @@ import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
 import { install as slashMenuBlockViewInstall } from './plugin/slash-menu-block-view';
+import { install as slashMenuSelectionInstall } from './plugin/slash-menu-selection';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
@@ -49,7 +50,6 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
           .selectionUpdated((ctx) => {
             const editorViewCtxVal = ctx.get(editorViewCtx);
             if (editorViewCtxVal.hasFocus && editorViewCtxVal.hasFocus()) {
-              console.log(111222);
               emitter.emit('selectionUpdated' as never);
             }
           });
@@ -60,6 +60,7 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
       .use(tableBlock); // table 配套
     blockViewInstall(editor, pluginViewFactory);
     slashMenuBlockViewInstall(editor, pluginViewFactory);
+    slashMenuSelectionInstall(editor, pluginViewFactory);
     return editor;
   });
 

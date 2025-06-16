@@ -13,7 +13,7 @@ import { codeImg, boldImg, tableImg, quoteImg, dividerImg, orderListImg, bulletL
 
 const View = () => {
   const [insertPosVal, setInsertPosVal] = useState('bottom');
-  const { editor, insert, loading } = useEditorHelper({
+  const { editor, insert, loading, deleteNode } = useEditorHelper({
     afterAction: () => {
       hide();
     },
@@ -97,15 +97,19 @@ const View = () => {
     setInsertPosVal(item.value);
   };
 
+  const onDelete = () => {
+    deleteNode?.();
+  };
+
   if (!editor) {
     return null;
   }
   return (
     <div className="slash-menu-block-view" ref={ref}>
       <div className="content">
-        {/* <div className="slash-view-content-item" onClick={onDelete}>
+        <div className="slash-view-content-item" onClick={onDelete}>
           删除
-        </div> */}
+        </div> 
         <div className="group">
           <div className="title">
             插到

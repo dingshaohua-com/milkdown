@@ -41,6 +41,25 @@ export default class EditorHelper {
     this.insertPos = insertPos;
   }
 
+  deleteNode() {
+    const editor = this.editor;
+    const ctx = editor.ctx;
+    const view = ctx.get(editorViewCtx);
+    const { state } = view;
+    const { tr, selection } = state;
+    const { $from, $to } = selection;
+
+    // 获取选中内容的范围
+    const from = $from.pos;
+    const to = $to.pos;
+
+    // 删除选中内容
+    tr.delete(from, to);
+
+    // 更新视图
+    view.dispatch(tr);
+  }
+
   insertSome(creatNode: creatNodeFn) {
     const editor = this.editor;
     const ctx = editor.ctx;
@@ -66,13 +85,13 @@ export default class EditorHelper {
       } else if (this.insertPos === 'top') {
         // 获取当前节点开始位置
         const currentNodeendPos = $from.start();
-         // 插入到当前节点结束位置
-         tr.insert(currentNodeendPos, nodes);
-          // 设置光标位置
-        const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0) -1 );
+        // 插入到当前节点结束位置
+        tr.insert(currentNodeendPos, nodes);
+        // 设置光标位置
+        const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0) - 1);
         tr.setSelection(TextSelection.near(finalPos));
         view.dispatch(tr);
-      }else if (this.insertPos === 'center') {
+      } else if (this.insertPos === 'center') {
         // // 获取当前节点开始位置
         // const currentNodeendPos = $from.start();
         // // 插入到当前节点结束位置
