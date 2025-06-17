@@ -1,7 +1,7 @@
 import cs from 'classnames';
 import Action from './cmp/action';
 import FontStyle from './cmp/font-style';
-import { useEditorConfig } from '../config-ctx';
+import { useEditorConfig } from '../../utils/config-ctx';
 
 const MenuBar = () => {
   const config = useEditorConfig();

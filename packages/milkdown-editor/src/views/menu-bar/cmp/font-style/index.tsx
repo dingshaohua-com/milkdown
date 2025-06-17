@@ -1,9 +1,9 @@
-import { Button, Tooltip } from 'antd';
+// import { Button, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import emitter from '../../../utils/emitter';
+import emitter from '../../../../utils/emitter';
 import type { Editor } from '@milkdown/kit/core';
-import { useEditorConfig } from '../../../config-ctx';
-import { checkMarkActive } from '../../../utils/editor-helper1';
+import { useEditorConfig } from '../../../../utils/config-ctx';
+import { checkMarkActive } from '../../../../utils/editor-helper1';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { toggleMark, setBlockType } from '@milkdown/kit/prose/commands';
 import { commandsCtx, editorStateCtx, schemaCtx } from '@milkdown/kit/core';
@@ -44,11 +44,12 @@ const FontStyle = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, isActive, action, id }) => (
-        <Tooltip title={tooltip} key={id}>
-          <Button onClick={() => action(editor)} color="default" variant={isActive(editor) ? 'solid' : 'filled'} autoInsertSpace>
-            <Icon />
-          </Button>
-        </Tooltip>
+        <Icon />
+        // <Tooltip title={tooltip} key={id}>
+        //   <Button onClick={() => action(editor)} color="default" variant={isActive(editor) ? 'solid' : 'filled'} autoInsertSpace>
+        //     <Icon />
+        //   </Button>
+        // </Tooltip>
       ))}
     </div>
   );

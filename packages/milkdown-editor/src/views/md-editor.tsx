@@ -21,6 +21,7 @@ const MdEditor: React.FC<MdEditorProps> = ({ content, onChange, setIsMdEditorFoc
         wrapperProps={{
           onBlur,
           onFocus,
+          fontSize: 12,
         }}
         onChange={(value) => {
           onChange(value);

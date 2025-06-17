@@ -2,7 +2,7 @@
   "name": "@repo/milkdown-editor",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.tsx",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,10 +16,10 @@
     "@milkdown/react": "^7.12.1",
     "@milkdown/theme-nord": "^7.12.1",
     "@monaco-editor/react": "^4.7.0",
+    "@preact/signals-react": "^3.2.0",
     "@prosemirror-adapter/react": "^0.4.1",
     "@remixicon/react": "^4.6.0",
     "@types/react": "^19.1.4",
-    "antd": "^5.25.2",
     "classnames": "^2.5.1",
     "mitt": "^3.0.1"
   },

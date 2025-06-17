@@ -1,7 +1,7 @@
 import { BlockProvider } from "@milkdown/kit/plugin/block";
 import { useInstance } from "@milkdown/react";
 import { useEffect, useRef } from "react";
-import block from '../../assets/block.svg';
+import block from '../../assets/img/block.svg';
 import { api as smBlockViewApi } from '../slash-menu-block-view';
 
 

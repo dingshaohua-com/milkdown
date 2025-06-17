@@ -1,6 +1,6 @@
-import { Button, Tooltip } from 'antd';
-import { EditorConfig } from '../../../../global';
-import { useEditorConfig } from '../../../config-ctx';
+// import { Button, Tooltip } from 'antd';
+import { EditorConfig } from '../../../../../global';
+import { useEditorConfig } from '../../../../utils/config-ctx';
 import { RiMarkdownLine, RiSave3Line } from '@remixicon/react';
 import { Editor, editorViewCtx, serializerCtx } from '@milkdown/kit/core';
 
@@ -40,11 +40,12 @@ const Action = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, action, id, style, isActive }) => (
-        <Tooltip title={tooltip} key={id}>
-          <Button onClick={() => action(config)} color="default" variant={isActive(config) ? 'solid' : 'filled'} autoInsertSpace>
-            <Icon style={style} /> {}
-          </Button>
-        </Tooltip>
+        <Icon style={style} />
+        // <Tooltip title={tooltip} key={id}>
+        //   <Button onClick={() => action(config)} color="default" variant={isActive(config) ? 'solid' : 'filled'} autoInsertSpace>
+        //     <Icon style={style} /> {}
+        //   </Button>
+        // </Tooltip>
       ))}
     </div>
   );

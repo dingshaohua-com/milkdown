@@ -1,8 +1,8 @@
-import './style.scss';
+import '../assets/css/style.scss';
 import MenuBar from './menu-bar';
 import MdEditor from './md-editor';
-import emitter from './utils/emitter';
-import { EditorConfig } from '../global';
+import emitter from '../utils/emitter';
+import { EditorConfig } from '../../global';
 // import '@milkdown/crepe/theme/frame.css'; // 一个完整主题（可选，其它可选项见下）
 import { useState, useEffect } from 'react';
 import { nord } from '@milkdown/theme-nord';
@@ -12,22 +12,21 @@ import { replaceAll } from '@milkdown/kit/utils';
 import { editorViewCtx } from '@milkdown/kit/core';
 import { commonmark } from '@milkdown/kit/preset/commonmark';
 import { tableBlock } from '@milkdown/kit/component/table-block';
-import { install as blockViewInstall } from './plugin/block-view';
+import { install as blockViewInstall } from '../plugin/block-view';
 // import '@milkdown/theme-nord/style.css'
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { usePluginViewFactory } from '@prosemirror-adapter/react';
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
-import { EditorConfigProvider, useEditorDefaultConfig } from './config-ctx';
-import { install as slashMenuBlockViewInstall } from './plugin/slash-menu-block-view';
-import { install as slashMenuSelectionInstall } from './plugin/slash-menu-selection';
+import { EditorConfigProvider, useEditorDefaultConfig } from '../utils/config-ctx';
+import { install as slashMenuSelectionInstall } from '../plugin/slash-menu-selection';
+import { install as slashMenuBlockViewInstall } from '../plugin/slash-menu-block-view';
 
 const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
-  const defaultConfig = useEditorDefaultConfig();
-  const config = { ...defaultConfig, ...props };
-  const [mdMode, setMdMode] = useState(config.mdMode || false);
+  const config = { ...useEditorDefaultConfig(), ...props };
+  const [mdMode, setMdMode] = useState(config.mdMode || true);
   const [isFocused, setIsFocused] = useState(false);
   const [isMdEditorFocused, setIsMdEditorFocused] = useState(false);
   const [content, setContent] = useState(config.content || '');
@@ -67,14 +66,14 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
   const editor = get();
 
   useEffect(() => {
-    if (editor && config.content !== content) {
+    if (config.content !== content) {
       editor?.action(replaceAll(config.content || ''));
       setContent(config.content || '');
     }
   }, [config.content]);
 
   useEffect(() => {
-    if (!editor) return;
+    if (loading || !editor) return;
     const editorView = editor.ctx.get(editorViewCtx);
     editorView.dom.addEventListener('focus', () => setIsFocused(true));
     editorView.dom.addEventListener('blur', () => setIsFocused(false));
@@ -96,13 +95,14 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
         <div className="content">
           <Milkdown />
           {mdMode && <MdEditor content={content} setIsMdEditorFocused={setIsMdEditorFocused} onChange={handleMdEditorChange} />}
+          
         </div>
       </div>
     </EditorConfigProvider>
   );
 };
 
-export const MilkdownEditorWrapper: React.FC<EditorConfig> = (props) => {
+export default (props: EditorConfig) => {
   return (
     <MilkdownProvider>
       <ProsemirrorAdapterProvider>
@@ -111,5 +111,3 @@ export const MilkdownEditorWrapper: React.FC<EditorConfig> = (props) => {
     </MilkdownProvider>
   );
 };
-
-export default MilkdownEditorWrapper;

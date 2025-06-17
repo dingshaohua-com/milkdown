@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { EditorDefaultConfig, EditorConfig } from '../global';
+import { EditorDefaultConfig, EditorConfig } from '../../global';
 
 const editorDefaultConfig: EditorDefaultConfig = {
   clickToEdit: false,
