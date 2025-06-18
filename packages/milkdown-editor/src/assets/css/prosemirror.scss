@@ -1,0 +1,106 @@
+@mixin styles {
+  .ProseMirror {
+    display: flow-root;
+    height: 100%;
+    outline: none;
+
+    // table {
+    //   border-collapse: collapse;
+    //   margin: 0;
+    //   overflow: hidden;
+    //   table-layout: fixed;
+    //   width: 100%;
+
+    //   td,
+    //   th {
+    //     border: 2px solid #ced4da;
+    //     box-sizing: border-box;
+    //     min-width: 1em;
+    //     padding: 3px 5px;
+    //     position: relative;
+    //     vertical-align: top;
+
+    //     > * {
+    //       margin-bottom: 0;
+    //     }
+    //   }
+
+    //   th {
+    //     background-color: #f8f9fa;
+    //     font-weight: bold;
+    //     text-align: left;
+    //   }
+    // }
+
+    blockquote {
+      position: relative;
+      padding-left: 40px;
+      padding-top: 0;
+      padding-bottom: 0;
+      box-sizing: content-box;
+      margin: 4px 0;
+
+      &::before {
+        content: '';
+        width: 4px;
+        left: 0;
+        top: 4px;
+        bottom: 4px;
+        position: absolute;
+        background: #e1e2e8;
+        border-radius: 100px;
+      }
+
+      hr {
+        margin-bottom: 16px;
+      }
+    }
+    ul {
+      display: block;
+      padding: 0;
+      margin: 0;
+      li {
+        padding: 0;
+        margin: 0;
+        display: block;
+        position: relative;
+        padding-left: 20px;
+        & > p {
+          margin: 0;
+          padding: 0;
+        }
+        &::before {
+          content: '';
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: black;
+          position: absolute;
+          left: 10px;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+        }
+      }
+    }
+    ol {
+      list-style: none;
+      padding-left: 0;
+      li {
+        position: relative;
+        padding-left: 20px;
+        & > p {
+          margin: 0;
+          padding: 0;
+        }
+        &::before {
+          content: counter(list-item) '. '; /* 对于 <ol>，显示 "1. "、"2. " */
+          position: absolute;
+          left: 0;
+          color: red; /* 自定义颜色 */
+          font-weight: bold; /* 加粗 */
+        }
+      }
+    }
+  }
+}

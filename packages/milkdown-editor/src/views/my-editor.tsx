@@ -23,7 +23,7 @@ import { EditorConfigProvider, useEditorDefaultConfig } from '../utils/config-ct
 import { install as slashMenuSelectionInstall } from '../plugin/slash-menu-selection';
 import { install as slashMenuBlockViewInstall } from '../plugin/slash-menu-block-view';
 
-const CrepeEditor: React.FC<EditorConfig> = (props) => {
+const MyEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
   const config = { ...useEditorDefaultConfig(), ...props };
   const [mdMode, setMdMode] = useState(config.mdMode || true);
@@ -90,12 +90,11 @@ const CrepeEditor: React.FC<EditorConfig> = (props) => {
 
   return (
     <EditorConfigProvider {...{ ...config, editor, isFocused, isMdEditorFocused, mdMode, setMdMode }}>
-      <div className="milkdown-editor">
+      <div className="my-editor">
         {editor && <MenuBar />}
         <div className="content">
           <Milkdown />
           {mdMode && <MdEditor content={content} setIsMdEditorFocused={setIsMdEditorFocused} onChange={handleMdEditorChange} />}
-          
         </div>
       </div>
     </EditorConfigProvider>
@@ -106,7 +105,7 @@ export default (props: EditorConfig) => {
   return (
     <MilkdownProvider>
       <ProsemirrorAdapterProvider>
-        <CrepeEditor {...props} />
+        <MyEditor {...props} />
       </ProsemirrorAdapterProvider>
     </MilkdownProvider>
   );

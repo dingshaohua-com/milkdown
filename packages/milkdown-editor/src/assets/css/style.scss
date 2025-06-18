@@ -1,56 +1,42 @@
-// @import '@milkdown/theme-nord/style.css';
+@use 'menu-bar.scss' as menu-bar;
+@use 'prosemirror.scss' as prosemirror;
+@use 'plugins-style.scss' as plugins-style;
 @import url('table-block.scss');
+// @import '@milkdown/theme-nord/style.css';
 
 .editable {
   min-width: 800px;
   border: rgba($color: #000000, $alpha: 0.1) solid 1px;
   border-radius: 0 0 6px 6px !important;
-  .menuBar {
+  .menu-bar {
     border-radius: 6px 6px 0 0 !important;
     border-bottom: none;
   }
 }
 
-.milkdown-editor {
+.my-editor {
+  width: 100%;
   height: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  .menuBar {
-    display: flex;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 4px 0;
-    // background-color: #fff;
-    border: 1px rgba($color: #000000, $alpha: 0.1) solid;
-
-    .group {
+  & > {
+    @include menu-bar.styles;
+    .content {
+      flex: 1;
       display: flex;
-      align-items: center;
-      &::after {
-        content: '';
-        width: 1px;
-        margin: 0 6px;
-        height: 16px;
-        background-color: rgba($color: #000000, $alpha: 0.1);
-      }
-
-      &:last-child {
-        &::after {
-          display: none;
-        }
-      }
       & > * {
-        height: 26px;
-        margin: 0 1px;
-        padding: 0px 6px;
-        border-radius: 2px;
-        svg,
-        img {
-          width: 16px;
-          height: 26px;
+        flex: 1;
+        overflow: auto;
+        .milkdown {
+          height: 100%;
+          @include prosemirror.styles;
+          @include plugins-style.styles;
         }
+      }
+      .md-editor {
+        // background-color: transparent;
+        border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
+        
       }
     }
   }
@@ -58,318 +44,5 @@
   .isMdEditorFocused {
     opacity: 0.2;
     pointer-events: none;
-  }
-
-  & > .content {
-    flex: 1;
-    display: flex;
-    & > * {
-      flex: 1;
-      overflow: auto;
-      .milkdown {
-        padding: 0 14px;
-        position: relative;
-        height: 100%;
-
-        & > .ProseMirror {
-          display: flow-root;
-          height: 100%;
-          outline: none;
-
-          // table {
-          //   border-collapse: collapse;
-          //   margin: 0;
-          //   overflow: hidden;
-          //   table-layout: fixed;
-          //   width: 100%;
-
-          //   td,
-          //   th {
-          //     border: 2px solid #ced4da;
-          //     box-sizing: border-box;
-          //     min-width: 1em;
-          //     padding: 3px 5px;
-          //     position: relative;
-          //     vertical-align: top;
-
-          //     > * {
-          //       margin-bottom: 0;
-          //     }
-          //   }
-
-          //   th {
-          //     background-color: #f8f9fa;
-          //     font-weight: bold;
-          //     text-align: left;
-          //   }
-          // }
-
-          blockquote {
-            position: relative;
-            padding-left: 40px;
-            padding-top: 0;
-            padding-bottom: 0;
-            box-sizing: content-box;
-            margin: 4px 0;
-
-            &::before {
-              content: '';
-              width: 4px;
-              left: 0;
-              top: 4px;
-              bottom: 4px;
-              position: absolute;
-              background: #e1e2e8;
-              border-radius: 100px;
-            }
-
-            hr {
-              margin-bottom: 16px;
-            }
-          }
-          ul {
-            display: block;
-            padding: 0;
-            margin: 0;
-            li {
-              padding: 0;
-              margin: 0;
-              display: block;
-              position: relative;
-              padding-left: 20px;
-              & > p {
-                margin: 0;
-                padding: 0;
-              }
-              &::before {
-                content: '';
-                width: 4px;
-                height: 4px;
-                border-radius: 50%;
-                background: black;
-                position: absolute;
-                left: 10px;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-              }
-            }
-          }
-          ol {
-            list-style: none;
-            padding-left: 0;
-            li {
-              position: relative;
-              padding-left: 20px;
-              & > p {
-                margin: 0;
-                padding: 0;
-              }
-              &::before {
-                content: counter(list-item) '. '; /* 对于 <ol>，显示 "1. "、"2. " */
-                position: absolute;
-                left: 0;
-                color: red; /* 自定义颜色 */
-                font-weight: bold; /* 加粗 */
-              }
-            }
-          }
-        }
-      }
-    }
-    .md-editor {
-      background-color: #fff;
-      padding-top: 60px;
-      border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
-      * {
-        font-size: 16px;
-      }
-    }
-  }
-}
-
-// math-filed 的软键盘隐藏
-math-field::part(virtual-keyboard-toggle),
-math-field::part(menu-toggle) {
-  display: none !important;
-}
-
-// math-filed 的边框隐藏
-math-field {
-  // border: none !important;
-  border: 1px solid rgba($color: #000000, $alpha: 0.08);
-  outline: none !important;
-}
-
-[data-show='true'] {
-  opacity: 1 !important;
-}
-[data-show='false'] {
-  opacity: 0;
-  z-index: -1 !important;
-}
-
-[data-show] {
-  transition: opacity 0.2s ease-in-out;
-}
-
-.block-view {
-  z-index: 1000;
-  position: fixed;
-  opacity: 0;
-
-  .block-view-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    img {
-      cursor: pointer;
-      border-radius: 6px;
-      width: 20px;
-      height: 20px;
-      &:hover {
-        background-color: #cbd5e1;
-      }
-    }
-  }
-}
-
-.mblock-view {
-  z-index: 1000;
-  position: fixed;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-
-  height: 20px;
-  width: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    cursor: pointer;
-    border-radius: 4px;
-    width: 18px;
-    height: 18px;
-    &:hover {
-      background-color: #cbd5e1;
-    }
-  }
-}
-
-.slash-menu-block-view {
-  color: rgba($color: #000000, $alpha: 0.8);
-  font-size: 14px;
-  width: 120px;
-  z-index: 1000;
-  position: fixed;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.1);
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  background-color: #fff;
-  left: 100px;
-  top: 100px;
-  & > {
-    .content {
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-      .slash-view-content-item {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        cursor: pointer;
-        &:hover {
-          background-color: rgba($color: #000000, $alpha: 0.02);
-        }
-      }
-      .group {
-        &:first-child {
-          margin-top: 0;
-        }
-        margin-top: 10px;
-        .title {
-          border-bottom: 1px solid rgba($color: #000000, $alpha: 0.08);
-          margin-bottom: 10px;
-          padding-bottom: 4px;
-          display: flex;
-          gap: 4px;
-          align-items: center;
-          .title-radios {
-            overflow: hidden;
-            cursor: pointer;
-            border: rgba($color: #000000, $alpha: 0.08) solid 1px;
-            border-radius: 10px;
-            display: flex;
-            font-size: 12px;
-            justify-content: space-between;
-            .title-radio {
-              border-radius: 50%;
-              height: 16px;
-              width: 16px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-            .active {
-              background-color: #000000;
-              color: white;
-            }
-          }
-        }
-        .items {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 6px;
-          .item {
-            box-sizing: border-box;
-            font-size: 12px;
-            cursor: pointer;
-            border: 1px solid rgba($color: #000000, $alpha: 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            padding: 4px;
-            &:hover {
-              background-color: rgba($color: #000000, $alpha: 0.08);
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.absolute {
-  position: absolute;
-}
-
-.slash-menu-selection {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #fff;
-  box-sizing: border-box;
-  padding: 4px;
-
-  .item {
-    &:hover {
-      background-color: rgba($color: #000000, $alpha: 0.08);
-    }
-    box-sizing: border-box;
-    height: 100%;
-    padding: 6px 2px;
-    svg {
-      height: 100%;
-    }
   }
 }

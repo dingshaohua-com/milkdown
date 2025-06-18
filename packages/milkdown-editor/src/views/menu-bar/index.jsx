@@ -7,7 +7,7 @@ const MenuBar = () => {
   const config = useEditorConfig();
   const isMdEditorFocused = config.isMdEditorFocused;
   return (
-    <div className={cs('menuBar', { isMdEditorFocused})}>
+    <div className={cs('menu-bar', { isMdEditorFocused})}>
       <FontStyle />
       <Action />
     </div>
