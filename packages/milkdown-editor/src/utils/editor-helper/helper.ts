@@ -1,8 +1,35 @@
 import { createTable } from '@milkdown/kit/preset/gfm';
 import { TextSelection } from '@milkdown/kit/prose/state';
 import { Editor, editorViewCtx } from '@milkdown/kit/core';
+import { setBlockType } from '@milkdown/kit/prose/commands';
+// import { clearRange } from '@milkdown/kit/prose/commands';
+import type { Attrs, NodeType } from '@milkdown/kit/prose/model';
+import type { Command, Transaction } from '@milkdown/kit/prose/state';
 import { creatNodeFn } from '../../plugin/slash-menu-block-view/type';
 import { createCodeBlockCommand, toggleStrongCommand, blockquoteSchema, bulletListSchema, codeBlockSchema, headingSchema, hrSchema, listItemSchema, orderedListSchema, paragraphSchema } from '@milkdown/kit/preset/commonmark';
+
+/**
+ * 清除选中范围的函数类型
+ */
+export type ClearRangeFunction = (tr: Transaction) => Transaction;
+
+/**
+ * 设置块类型的函数类型
+ */
+export type SetBlockTypeFunction = (tr: Transaction, nodeType: NodeType, attrs?: Attrs | null) => Transaction;
+
+/**
+ * 清除内容并设置块类型的命令函数类型
+ */
+export type ClearContentAndSetBlockTypeCommand = (nodeType: NodeType, attrs?: Attrs | null) => Command;
+
+/**
+ * 清除内容并设置块类型的命令函数
+ * @param nodeType 要设置的节点类型
+ * @param attrs 节点属性，默认为 null
+ * @returns 返回一个命令函数
+ */
+export type ClearContentAndSetBlockTypeCommand = (nodeType: NodeType, attrs?: Attrs | null) => Command;
 
 export default class EditorHelper {
   private static instance: EditorHelper | null = null;
@@ -101,6 +128,8 @@ export default class EditorHelper {
         // const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0) -1 );
         // tr.setSelection(TextSelection.near(finalPos));
         // view.dispatch(tr);
+        this.clearContentAndSetBlockType(tr,nodes[0].type, null);
+        view.dispatch(tr);
       }
 
       // 聚焦
@@ -179,14 +208,14 @@ export default class EditorHelper {
     });
   }
 
-  insertLatex = () => {
+  insertLatex() {
     this.insertSome(({ ctx, state }) => {
       const text = state.schema.text('Latex');
       const paragraph = state.schema.nodes.paragraph.create(null, text);
       const latex = state.schema.nodes.latex.create(null, paragraph);
       return latex;
     });
-  };
+  }
 
   // const transformToCode = (e: React.MouseEvent) => {
   //   e.preventDefault();
@@ -201,4 +230,36 @@ export default class EditorHelper {
   //     return callCommand(toggleStrongCommand.key)(ctx);
   //   });
   // };
+
+  /**
+ * 清除选中范围的实现
+ */
+clearRange: ClearRangeFunction = (tr) => {
+  const { $from, $to } = tr.selection;
+  const { pos: from } = $from;
+  const { pos: to } = $to;
+  tr = tr.deleteRange(from - $from.node().content.size, to);
+  return tr;
+};
+
+/**
+ * 设置块类型的实现
+ */
+setBlockType: SetBlockTypeFunction = (tr, nodeType, attrs = null) => {
+  const { from, to } = tr.selection;
+  return tr.setBlockType(from, to, nodeType, attrs);
+};
+
+/**
+ * 清除内容并设置块类型的命令函数实现
+ */
+clearContentAndSetBlockType = (
+  tr,
+  nodeType,
+  attrs = null
+) => {
+  const mtr:any = setBlockType(this.clearRange(tr), nodeType, attrs);
+  // dispatch(mtr());
+      // dispatch(tr.scrollIntoView());
+}; 
 }
