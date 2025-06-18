@@ -62,7 +62,7 @@ const View = () => {
   }, [view, prevState]);
 
   return (
-    <div className="absolute slash-menu-selection" ref={ref}>
+    <div className="slash-menu-selection" ref={ref}>
       <div className="item">
         <RiBold />
       </div>

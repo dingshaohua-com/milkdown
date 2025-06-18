@@ -1,8 +1,8 @@
+import InsertHelper from './helper';
 import { useEditor } from '@milkdown/react';
 import { Editor } from '@milkdown/kit/core';
-import { useInstance } from '@milkdown/react';
-import InsertHelper from './helper';
 import { useCallback, useMemo } from 'react';
+import { useInstance } from '@milkdown/react';
 
 type UseEditorHelperProps = {
   afterAction?: () => void;
@@ -32,17 +32,14 @@ const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => 
   const [loading, get] = useInstance();
   const editor: Editor = get()!;
 
-  console.log(props.insertPos);
-  
-
   if (!editor) {
     return { editor, loading };
   }
 
-//   const action = useCallback(
-//     (fn: (ctx: Ctx) => void) => editor.action(fn),
-//     [loading],
-//   );
+  //   const action = useCallback(
+  //     (fn: (ctx: Ctx) => void) => editor.action(fn),
+  //     [loading],
+  //   );
 
   // 因为做了单例，所以这里不用 useRef来保持引用
   let insertHelper: InsertHelper = InsertHelper.getInstance(editor);
@@ -101,8 +98,6 @@ const useEditorHelper = (props: UseEditorHelperProps): UseEditorHelperReturn => 
   const deleteNode = useCallback(() => {
     insertHelper.deleteNode();
   }, [insertHelper]);
-
-
 
   return { editor, loading, insert, deleteNode };
 };

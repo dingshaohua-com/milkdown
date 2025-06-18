@@ -1,6 +1,6 @@
 import { EditorConfig } from '../../../../../global';
-import { useEditorConfig } from '../../../../utils/config-ctx';
 import { RiMarkdownLine, RiSave3Line } from '@remixicon/react';
+import { useEditorConfig } from '../../../../utils/config-ctx';
 import { Editor, editorViewCtx, serializerCtx } from '@milkdown/kit/core';
 
 const buttonGroup: Array<any> = [
@@ -8,13 +8,13 @@ const buttonGroup: Array<any> = [
     id: 'md',
     icon: RiMarkdownLine,
     isActive: (config: EditorConfig) => config.mdMode,
-    action: (config: EditorConfig) =>  config.setMdMode(!config.mdMode),
+    action: (config: EditorConfig) => config.setMdMode(!config.mdMode),
     tooltip: 'MD模式',
   },
   {
     id: 'save',
     icon: RiSave3Line,
-    isActive:()=>false,
+    isActive: () => false,
     action: (editor: Editor, config: EditorConfig) => {
       editor.action((ctx) => {
         const editorView = ctx.get(editorViewCtx);
@@ -39,7 +39,7 @@ const Action = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, action, id, style, isActive }) => (
-        <Icon style={style} className={isActive(config) ? 'solid' : 'filled'} onClick={() => action(config)}/>
+        <Icon key={id} style={style} className={isActive(config) ? 'solid' : 'filled'} onClick={() => action(config)} />
       ))}
     </div>
   );

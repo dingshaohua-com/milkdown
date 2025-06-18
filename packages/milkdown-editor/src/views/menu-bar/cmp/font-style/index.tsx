@@ -22,7 +22,7 @@ const buttonGroup: Array<any> = [
     id: 'emphasis',
     icon: RiItalic,
     action: (editor: Editor) => editor.action((ctx) => ctx.get(commandsCtx).call(toggleEmphasisCommand.key)),
-    isActive:(editor: Editor) => checkMarkActive('emphasis', editor),
+    isActive: (editor: Editor) => checkMarkActive('emphasis', editor),
     tooltip: '斜体',
   },
   {
@@ -44,7 +44,7 @@ const FontStyle = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, isActive, action, id }) => (
-        <Icon className={isActive(editor) ? 'solid' : 'filled'} onClick={() => action(editor)}/>
+        <Icon key={id} className={isActive(editor) ? 'solid' : 'filled'} onClick={() => action(editor)} />
       ))}
     </div>
   );
