@@ -1,4 +1,3 @@
-// import { Button, Tooltip } from 'antd';
 import { EditorConfig } from '../../../../../global';
 import { useEditorConfig } from '../../../../utils/config-ctx';
 import { RiMarkdownLine, RiSave3Line } from '@remixicon/react';
@@ -40,12 +39,7 @@ const Action = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, action, id, style, isActive }) => (
-        <Icon style={style} />
-        // <Tooltip title={tooltip} key={id}>
-        //   <Button onClick={() => action(config)} color="default" variant={isActive(config) ? 'solid' : 'filled'} autoInsertSpace>
-        //     <Icon style={style} /> {}
-        //   </Button>
-        // </Tooltip>
+        <Icon style={style} className={isActive(config) ? 'solid' : 'filled'} onClick={() => action(config)}/>
       ))}
     </div>
   );

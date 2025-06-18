@@ -44,12 +44,7 @@ const FontStyle = () => {
   return (
     <div className="group">
       {buttonGroup.map(({ icon: Icon, tooltip, isActive, action, id }) => (
-        <Icon />
-        // <Tooltip title={tooltip} key={id}>
-        //   <Button onClick={() => action(editor)} color="default" variant={isActive(editor) ? 'solid' : 'filled'} autoInsertSpace>
-        //     <Icon />
-        //   </Button>
-        // </Tooltip>
+        <Icon className={isActive(editor) ? 'solid' : 'filled'} onClick={() => action(editor)}/>
       ))}
     </div>
   );

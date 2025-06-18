@@ -6,10 +6,23 @@
     align-items: center;
     padding: 4px 0;
     border: 1px rgba($color: #000000, $alpha: 0.1) solid;
+    border-left: none;
+    border-right: none;
 
     .group {
       display: flex;
       align-items: center;
+      svg {
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 4px;
+      }
+      .solid {
+        background-color: rgba($color: #000000, $alpha: 0.1);
+      }
+      .filled {
+        background-color: none;
+      }
       &::after {
         content: '';
         width: 1px;
