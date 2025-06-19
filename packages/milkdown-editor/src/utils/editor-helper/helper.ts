@@ -81,10 +81,15 @@ export default class EditorHelper {
     const to = $to.pos;
 
     // 删除选中内容
-    tr.delete(from, to);
+    // tr.delete(from, to);
+    tr.deleteRange(from, to);
+    // tr.delete(1, 10);
 
     // 更新视图
     view.dispatch(tr);
+
+    // tr.deleteRange(1, 10);
+    // view.dispatch(tr);
   }
 
   insertSome(creatNode: creatNodeFn) {
@@ -128,8 +133,9 @@ export default class EditorHelper {
         // const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0) -1 );
         // tr.setSelection(TextSelection.near(finalPos));
         // view.dispatch(tr);
-        this.clearContentAndSetBlockType(tr,nodes[0].type, null);
-        view.dispatch(tr);
+        // this.clearContentAndSetBlockType(tr,nodes[0].type, null);
+        // this.clearRange(tr);
+       
       }
 
       // 聚焦
@@ -238,6 +244,8 @@ clearRange: ClearRangeFunction = (tr) => {
   const { $from, $to } = tr.selection;
   const { pos: from } = $from;
   const { pos: to } = $to;
+  console.log($from.node().content.size, from,to);
+  
   tr = tr.deleteRange(from - $from.node().content.size, to);
   return tr;
 };

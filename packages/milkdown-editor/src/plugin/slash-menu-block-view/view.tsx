@@ -3,13 +3,13 @@ import { api } from './index';
 import { slash } from './index';
 import { creatNodeFn } from './type';
 import { Ctx } from '@milkdown/kit/ctx';
-import { RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiListCheck, RiImageLine, RiFunctions, RiAddLine, RiDeleteBinLine } from '@remixicon/react';
 import { SlashProvider } from '@milkdown/kit/plugin/slash';
 import useEditorHelper from '../../utils/editor-helper/hook';
 import { Node, ResolvedPos } from '@milkdown/kit/prose/model';
 import { usePluginViewContext } from '@prosemirror-adapter/react';
 import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiAddLine, RiDeleteBinLine, RiCodeLine } from '@remixicon/react';
 
 const View = () => {
   const [insertPosVal, setInsertPosVal] = useState('bottom');
@@ -107,11 +107,12 @@ const View = () => {
     <div className="slash-menu-block-view" ref={ref}>
       <div className="content">
         <div className="slash-view-content-item" onClick={onDelete}>
-          <RiDeleteBinLine/>删除
+          <RiDeleteBinLine />
+          删除
         </div>
         <div className="group">
           <div className="title">
-           <RiAddLine/>插
+            <RiAddLine />插
             <div className="title-radios">
               {insertPosNodes.map((it) => (
                 <div className={cs('title-radio', { active: insertPosVal === it.value })} onClick={(e) => onInsertPosClick(it)} key={it.value}>
@@ -131,7 +132,7 @@ const View = () => {
               <RiH3 />
             </div>
             <div className="item" onClick={insert.tabel}>
-              <RiTableLine/>
+              <RiTableLine />
             </div>
             <div className="item" onClick={insert.quote}>
               <RiChatQuoteLine />
@@ -145,15 +146,17 @@ const View = () => {
             <div className="item" onClick={insert.orderList}>
               <RiListOrdered />
             </div>
-
             <div className="item" onClick={insert.todoList}>
-              <RiListCheck />
+              <RiTodoLine />
             </div>
             <div className="item" onClick={insert.img}>
               <RiImageLine />
             </div>
             <div className="item" onClick={insert.latex}>
               <RiFunctions />
+            </div>
+            <div className="item" onClick={insert.latex}>
+              <RiCodeLine />
             </div>
           </div>
         </div>

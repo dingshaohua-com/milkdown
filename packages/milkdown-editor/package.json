@@ -21,7 +21,9 @@
     "@remixicon/react": "^4.6.0",
     "@types/react": "^19.1.4",
     "classnames": "^2.5.1",
-    "mitt": "^3.0.1"
+    "inversify": "7.0.0-alpha.5",
+    "mitt": "^3.0.1",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "sass-embedded": "^1.89.0"
