@@ -1,8 +1,9 @@
 import './App.css';
+import mdTemp from './md-temp';
 import { useEffect, useState } from 'react';
 import MilkdownEditor from '@repo/milkdown-editor';
 
-const contentTemp = 'hello';
+const contentTemp = mdTemp;
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -12,7 +13,6 @@ function App() {
   };
 
   const [content, setContent] = useState(contentTemp);
-
 
   const handleChange = (value: string) => {
     console.log('change', value);
