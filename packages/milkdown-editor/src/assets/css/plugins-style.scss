@@ -12,6 +12,16 @@
     transition: opacity 0.2s ease-in-out;
   }
 
+  .milkdown-block-handle {
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    transition: all 0.2s;
+    display: flex;
+    position: absolute;
+  }
+
   .block-view {
     z-index: 1000;
     position: fixed;
@@ -72,7 +82,7 @@
     // padding: 10px;
     box-sizing: border-box;
     border-radius: 4px;
-    
+
     left: 100px;
     top: 100px;
     overflow: hidden;

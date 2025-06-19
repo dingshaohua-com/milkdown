@@ -1,13 +1,13 @@
-@use 'menu-bar.scss'as menu-bar;
-@use 'prosemirror.scss'as prosemirror;
-@use 'plugins-style.scss'as plugins-style;
+@use 'menu-bar.scss' as menu-bar;
+@use 'prosemirror.scss' as prosemirror;
+@use 'plugins-style.scss' as plugins-style;
 @import url('table-block.scss');
 @import url('public.scss');
 // @import '@milkdown/theme-nord/style.css';
 
 .editable {
-  min-width    : 800px;
-  border       : rgba($color: #000000, $alpha: 0.1) solid 1px;
+  min-width: 800px;
+  border: rgba($color: #000000, $alpha: 0.1) solid 1px;
   border-radius: 0 0 6px 6px !important;
 
   .menu-bar {
@@ -17,54 +17,45 @@
 }
 
 .my-editor {
-  width         : 100%;
-  height        : 100%;
-  display       : flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
 
-
-  &> {
+  & > {
     @include menu-bar.styles;
 
     .content {
-      flex    : 1;
-      display : flex;
+      flex: 1;
+      display: flex;
       overflow: hidden;
 
-      &>* {
-        flex    : 1;
-        overflow: auto;
+      & > * {
+        flex: 1;
+        // overflow: auto;
       }
 
-      &> {
+      & > {
         div[data-milkdown-root] {
-
-
-          
           .milkdown {
             position: relative;
-            height  : 100%;
+            height: 100%;
+            overflow: auto;
             @include prosemirror.styles;
             @include plugins-style.styles;
           }
         }
-
-
-
-
-
       }
 
       .md-editor {
         // background-color: transparent;
         border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
-
       }
     }
   }
 
   .isMdEditorFocused {
-    opacity       : 0.2;
+    opacity: 0.2;
     pointer-events: none;
   }
 }

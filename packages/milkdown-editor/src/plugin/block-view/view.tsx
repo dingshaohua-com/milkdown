@@ -1,9 +1,8 @@
-import { BlockProvider } from "@milkdown/kit/plugin/block";
-import { useInstance } from "@milkdown/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
+import { useInstance } from '@milkdown/react';
 import block from '../../assets/img/block.svg';
+import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { api as smBlockViewApi } from '../slash-menu-block-view';
-
 
 export const View = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,6 +20,8 @@ export const View = () => {
     tooltipProvider.current = new BlockProvider({
       ctx: editor.ctx,
       content: div,
+      getPlacement: () => 'left',
+      getOffset: () => 18,
     });
     tooltipProvider.current?.update();
 
@@ -37,11 +38,8 @@ export const View = () => {
   };
 
   return (
-    <div
-      ref={ref}
-      className="mblock-view"
-    >
-      <img src={block} alt="block" onClick={onClick}/>
+    <div ref={ref} className="milkdown-block-handle">
+      <img src={block} alt="block" onClick={onClick} />
     </div>
   );
 };
