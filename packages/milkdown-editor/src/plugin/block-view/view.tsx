@@ -45,57 +45,28 @@ export const View = () => {
     };
   }, [loading]);
 
-  // useEffect(() => {
-  //   const editor = get();
-  //   if (editor) {
-  //     const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
-  //     console.log(smbvApi);
-  //   }
-  // }, []);
-
   useClickAway(() => {
     const editor = get();
     if (!editor || !tooltipProvider.current) return;
-    // const service = editor.ctx.get(blockServiceInstance.key);
-    // service.
-    tooltipProvider.current.destroy();
-    createBlockProvider(editor);
+    const service = editor.ctx.get(blockServiceInstance.key);
+    service.bind(editor.ctx, (message) => {
+      if (message.type === 'hide') {
+        tooltipProvider.current.hide();
+        // this.#activeNode = null;
+      } else if (message.type === 'show') {
+        tooltipProvider.current.show(message.active);
+        // this.#activeNode = message.active;
+      }
+    });
   }, ref);
 
   const onClick = () => {
-    // const editor = get();
-    // if (!editor) return;
-    // const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
-    // smbvApi.show();
-    // console.log(11222, tooltipProvider.current);
-    // tooltipProvider.current?.destroy();
-
     const editor = get();
     if (!editor || !ref.current) return;
     const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
     smbvApi.show();
-
     const service = editor.ctx.get(blockServiceInstance.key);
     service.unBind();
-
-    // service.bind = service.bind;
-
-    // setTimeout(() => {
-    //   service.bind(editor.ctx, (message) => {
-    //     console.log(message);
-    //   });
-    //   // createBlockProvider(editor);
-    // }, 3000);
-
-    // tooltipProvider.current?.update();
-    // service.removeEvent(ref.current);
-    // console.log(111, ref.current);
-
-    // if (smbvApi.onClose) {
-    //   smbvApi.onClose(() => {
-    //     restoreAllMouseEvents(ref.current);
-    //   });
-    // }
   };
 
   return (

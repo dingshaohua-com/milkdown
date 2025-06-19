@@ -28,8 +28,8 @@ const View = () => {
     if (!view || !ref.current) return;
     const { $anchor } = view.state.selection;
     const pos = view.coordsAtPos($anchor.pos);
-    ref.current.style.top = `${pos.top + 30}px`;
-    ref.current.style.left = `${pos.left - 40}px`;
+    ref.current.style.top = `${pos.top - 10}px`;
+    ref.current.style.left = `${pos.left - 120}px`;
     slashProvider.current?.show();
   };
 

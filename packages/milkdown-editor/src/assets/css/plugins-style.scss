@@ -22,60 +22,60 @@
     position: absolute;
   }
 
-  .block-view {
-    z-index: 1000;
-    position: fixed;
-    opacity: 0;
+  // .block-view {
+  //   z-index: 1000;
+  //   position: fixed;
+  //   opacity: 0;
 
-    .block-view-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
+  //   .block-view-container {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     gap: 2px;
 
-      img {
-        cursor: pointer;
-        border-radius: 6px;
-        width: 20px;
-        height: 20px;
+  //     img {
+  //       cursor: pointer;
+  //       border-radius: 6px;
+  //       width: 20px;
+  //       height: 20px;
 
-        &:hover {
-          background-color: #cbd5e1;
-        }
-      }
-    }
-  }
+  //       &:hover {
+  //         background-color: #cbd5e1;
+  //       }
+  //     }
+  //   }
+  // }
 
-  .mblock-view {
-    z-index: 1000;
-    position: fixed;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+  // .mblock-view {
+  //   z-index: 1000;
+  //   position: fixed;
+  //   opacity: 0;
+  //   transition: opacity 0.2s ease-in-out;
 
-    height: 20px;
-    width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  //   height: 20px;
+  //   width: 20px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
 
-    img {
-      cursor: pointer;
-      border-radius: 4px;
-      width: 18px;
-      height: 18px;
+  //   img {
+  //     cursor: pointer;
+  //     border-radius: 4px;
+  //     width: 18px;
+  //     height: 18px;
 
-      &:hover {
-        background-color: #cbd5e1;
-      }
-    }
-  }
+  //     &:hover {
+  //       background-color: #cbd5e1;
+  //     }
+  //   }
+  // }
 
   .slash-menu-block-view {
     color: rgba($color: #000000, $alpha: 0.8);
     font-size: 14px;
     width: 120px;
     z-index: 1000;
-    position: fixed;
+    position: absolute;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
     box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.1);
