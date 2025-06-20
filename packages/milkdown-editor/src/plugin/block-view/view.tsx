@@ -11,17 +11,17 @@ export const View = () => {
 
   const [loading, get] = useInstance();
 
-  const createBlockProvider = (editor: any) => {
-    const div = ref.current;
-    const blockProvider = new BlockProvider({
-      ctx: editor.ctx,
-      content: div,
-      getPlacement: () => 'left',
-      getOffset: () => 18,
-    });
-    tooltipProvider.current = blockProvider;
-    tooltipProvider.current?.update();
-  };
+  // const createBlockProvider = (editor: any) => {
+  //   const div = ref.current as HTMLElement;
+  //   const blockProvider = new BlockProvider({
+  //     ctx: editor.ctx,
+  //     content: div,
+  //     getPlacement: () => 'left',
+  //     getOffset: () => 18,
+  //   });
+  //   tooltipProvider.current = blockProvider;
+  //   tooltipProvider.current?.update();
+  // };
   useEffect(() => {
     const div = ref.current;
     if (loading || !div) return;
@@ -45,8 +45,9 @@ export const View = () => {
     };
   }, [loading]);
 
+  const editor = get()!;
+  const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
   useClickAway(() => {
-    const editor = get();
     if (!editor || !tooltipProvider.current) return;
     const service = editor.ctx.get(blockServiceInstance.key);
     service.bind(editor.ctx, (message) => {
@@ -58,13 +59,15 @@ export const View = () => {
         // this.#activeNode = message.active;
       }
     });
-  }, ref);
+  }, [smbvApi?.ref, ref]);
 
-  const onClick = () => {
+  const onClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    var x = e.clientX;
+    var y = e.clientY;
     const editor = get();
     if (!editor || !ref.current) return;
     const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
-    smbvApi.show();
+    smbvApi.show(x,y);
     const service = editor.ctx.get(blockServiceInstance.key);
     service.unBind();
   };
