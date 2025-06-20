@@ -1,3 +1,4 @@
+import cs from 'classnames';
 import MenuBar from './menu-bar';
 import '../assets/css/style.scss';
 import MdEditor from './md-editor';
@@ -90,7 +91,7 @@ const MyEditor: React.FC<EditorConfig> = (props) => {
 
   return (
     <EditorConfigProvider {...{ ...config, editor, isFocused, isMdEditorFocused, mdMode, setMdMode }}>
-      <div className="my-editor">
+      <div className={cs('my-editor', { 'mobile': config.model === 'mobile' })}>
         {editor && <MenuBar />}
         <div className="content">
           <Milkdown />

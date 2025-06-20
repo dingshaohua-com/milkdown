@@ -5,6 +5,7 @@ const editorDefaultConfig: EditorDefaultConfig = {
   clickToEdit: false,
   imgBaseUrl: '',
   mdMode: false,
+  model: 'pc',
 };
 const EditorDefaultConfigContext = createContext<EditorDefaultConfig>(editorDefaultConfig);
 export const useEditorDefaultConfig = () => useContext(EditorDefaultConfigContext);

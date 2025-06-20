@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="app">
-      <MilkdownEditor content={content} onSave={handleSave} onChange={handleChange} />
+      <MilkdownEditor content={content} onSave={handleSave} onChange={handleChange} model="mobile" />
     </div>
   );
 }
