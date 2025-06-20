@@ -51,6 +51,8 @@ export const View = () => {
     if (!editor || !tooltipProvider.current) return;
     const service = editor.ctx.get(blockServiceInstance.key);
     service.bind(editor.ctx, (message) => {
+      console.log(message);
+      
       if (message.type === 'hide') {
         tooltipProvider.current.hide();
         // this.#activeNode = null;

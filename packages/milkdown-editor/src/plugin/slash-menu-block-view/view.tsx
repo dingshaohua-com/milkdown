@@ -29,35 +29,36 @@ const View = () => {
     
     if (!view || !ref.current) return;
     
-    // 获取编辑器容器的位置信息
-    const editorRect = view.dom.getBoundingClientRect();
+    // // 获取编辑器容器的位置信息
+    // const editorRect = view.dom.getBoundingClientRect();
     
-    // 使用传入的鼠标坐标，这些坐标已经是相对于视口的
-    const tooltipX = x - 160; // 向左偏移120px
-    const tooltipY = y - 20;  // 向上偏移10px
+    // // 使用传入的鼠标坐标，这些坐标已经是相对于视口的
+    // const tooltipX = x - 100; // 向左偏移120px
+    // const tooltipY = y - 20;  // 向上偏移10px
     
-    // 检查边界，确保工具提示不会超出视口
-    const tooltipWidth = 120; // 工具提示的宽度
-    const tooltipHeight = 200; // 工具提示的估计高度
+    // // 检查边界，确保工具提示不会超出视口
+    // const tooltipWidth = 120; // 工具提示的宽度
+    // const tooltipHeight = 200; // 工具提示的估计高度
     
-    // 如果工具提示会超出右边界，则向左调整
-    if (tooltipX + tooltipWidth > window.innerWidth) {
-      ref.current.style.left = `${window.innerWidth - tooltipWidth - 10}px`;
-    } else {
-      ref.current.style.left = `${tooltipX}px`;
-    }
+    // // 如果工具提示会超出右边界，则向左调整
+    // // if (tooltipX + tooltipWidth > window.innerWidth) {
+    // //   ref.current.style.left = `${window.innerWidth - tooltipWidth - 10}px`;
+    // // } else {
+    // //   ref.current.style.left = `${tooltipX}px`;
+    // // }
+    // ref.current.style.left = `${tooltipX}px`;
     
-    // 如果工具提示会超出下边界，则向上调整
-    if (tooltipY + tooltipHeight > window.innerHeight) {
-      ref.current.style.top = `${window.innerHeight - tooltipHeight - 10}px`;
-    } else {
-      ref.current.style.top = `${tooltipY}px`;
-    }
+    // // 如果工具提示会超出下边界，则向上调整
+    // if (tooltipY + tooltipHeight > window.innerHeight) {
+    //   ref.current.style.top = `${window.innerHeight - tooltipHeight - 50}px`;
+    // } else {
+    //   ref.current.style.top = `${tooltipY}px`;
+    // }
 
-    // const { $anchor } = view.state.selection;
-    // const pos = view.coordsAtPos($anchor.pos);
-    // ref.current.style.top = `${pos.top - 10}px`;
-    // ref.current.style.left = `${pos.left - 120}px`;
+    const { $anchor } = view.state.selection;
+    const pos = view.coordsAtPos($anchor.pos);
+    ref.current.style.top = `${pos.top - 10}px`;
+    ref.current.style.left = `${pos.left - 180}px`;
     slashProvider.current?.show();
   };
 
