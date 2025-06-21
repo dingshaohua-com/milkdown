@@ -1,83 +1,20 @@
 import cs from 'classnames';
-import { api } from './index';
-import { slash } from './index';
-import { creatNodeFn } from './type';
-import { Ctx } from '@milkdown/kit/ctx';
-import { SlashProvider } from '@milkdown/kit/plugin/slash';
+
+import { useState } from 'react';
 import useEditorHelper from '../../utils/editor-helper/hook';
-import { Node, ResolvedPos } from '@milkdown/kit/prose/model';
-import { usePluginViewContext } from '@prosemirror-adapter/react';
-import { EditorState, Selection, Transaction } from '@milkdown/kit/prose/state';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiAddLine, RiDeleteBinLine, RiCodeLine } from '@remixicon/react';
 
-const View = () => {
+function MenuView() {
   const [insertPosVal, setInsertPosVal] = useState('bottom');
   const { editor, insert, loading, deleteNode } = useEditorHelper({
     afterAction: () => {
-      hide();
+      // hide();
+      console.log(8989);
+      
     },
     insertPos: insertPosVal,
   });
   if (!insert) return null;
-  const ref = useRef<HTMLDivElement>(null);
-  const slashProvider = useRef<SlashProvider>(null);
-  const { view, prevState } = usePluginViewContext();
-  const hide = () => slashProvider.current?.hide();
-  const show = (x: number, y: number) => {
-    if (!view || !ref.current) return;
-    const { $anchor } = view.state.selection;
-    const pos = view.coordsAtPos($anchor.pos);
-    ref.current.style.top = `${pos.top}px`;
-    ref.current.style.left = `${0}px`;
-    slashProvider.current?.show();
-  };
-
-  const initializeApi = useCallback(() => {
-    try {
-      // if (editor.ctx.get(api.key))  return;
-      editor.ctx.set(api.key, {
-        show: (x: number, y: number) => show(x, y),
-        hide: () => hide(),
-        ref,
-      });
-    } catch (e) {
-      // console.warn('HRM会导致 初始化api失败，这是正常现象:', e);
-    }
-  }, [editor]);
-
-  useEffect(() => {
-    initializeApi();
-    const div = ref.current;
-    if (loading || !div) return;
-    slashProvider.current = new SlashProvider({
-      content: div,
-      trigger: '',
-    });
-
-    // 添加全局点击事件监听
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (div && !div.contains(target)) {
-        hide();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      slashProvider.current?.destroy();
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [loading]);
-
-  // 禁用更新
-  // useEffect(() => {
-  //   if (view && prevState && slashProvider.current) {
-  //     slashProvider.current.update(view, prevState);
-  //   }
-  // }, [view, prevState]);
-
   const insertPosNodes = [
     {
       label: '下',
@@ -105,7 +42,7 @@ const View = () => {
     return null;
   }
   return (
-    <div className="slash-menu-block-view" ref={ref}>
+    <div className="slash-menu-block-view">
       <div className="content">
         <div className="slash-view-content-item" onClick={onDelete}>
           <RiDeleteBinLine />
@@ -163,22 +100,23 @@ const View = () => {
         </div>
 
         {/* <div className="group">
-          <div className="title">转换为</div>
-          <div className="items">
-            <div className="item">
-              <img src={boldImg} alt="" onClick={transformToBold} />
-            </div>
-            <div className="item">
-              <img src={codeImg} alt="" onClick={transformToCode} />
-            </div>
-          </div>
-        </div> */}
+      <div className="title">转换为</div>
+      <div className="items">
+        <div className="item">
+          <img src={boldImg} alt="" onClick={transformToBold} />
+        </div>
+        <div className="item">
+          <img src={codeImg} alt="" onClick={transformToCode} />
+        </div>
+      </div>
+    </div> */}
 
         {/* <div className="slash-view-content-item" onClick={insertTitle1}>
-          转换为代码
-        </div> */}
+      转换为代码
+    </div> */}
       </div>
     </div>
   );
-};
-export default View;
+}
+
+export default MenuView;

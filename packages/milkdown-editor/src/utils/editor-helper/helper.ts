@@ -123,6 +123,8 @@ export default class EditorHelper {
         const finalPos = tr.doc.resolve(currentNodeendPos + nodes.reduce((sum, node) => sum + node.nodeSize, 0) - 1);
         tr.setSelection(TextSelection.near(finalPos));
         view.dispatch(tr);
+        console.log(1112233, editor);
+        
       } else if (this.insertPos === 'center') {
         // // 获取当前节点开始位置
         // const currentNodeendPos = $from.start();

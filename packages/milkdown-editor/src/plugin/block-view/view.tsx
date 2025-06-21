@@ -1,34 +1,29 @@
+import MenuView from './menu-view';
 import { useClickAway } from 'ahooks';
-import { useEffect, useRef } from 'react';
 import { useInstance } from '@milkdown/react';
 import block from '../../assets/img/block.svg';
-import { api as smBlockViewApi } from '../slash-menu-block-view';
+import { useEffect, useRef, useState } from 'react';
+import { autoUpdate, useFloating } from '@floating-ui/react';
 import { BlockProvider, blockServiceInstance, blockConfig } from '@milkdown/kit/plugin/block';
 
 export const View = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const floatingRef = useRef<HTMLDivElement>(null);
   const tooltipProvider = useRef<BlockProvider>(null);
+
+  const { refs, floatingStyles } = useFloating({
+    whileElementsMounted: autoUpdate,
+  });
 
   const [loading, get] = useInstance();
 
-  // const createBlockProvider = (editor: any) => {
-  //   const div = ref.current as HTMLElement;
-  //   const blockProvider = new BlockProvider({
-  //     ctx: editor.ctx,
-  //     content: div,
-  //     getPlacement: () => 'left',
-  //     getOffset: () => 18,
-  //   });
-  //   tooltipProvider.current = blockProvider;
-  //   tooltipProvider.current?.update();
-  // };
   useEffect(() => {
     const div = ref.current;
     if (loading || !div) return;
 
     const editor = get();
     if (!editor) return;
-
+    
     const blockProvider = new BlockProvider({
       ctx: editor.ctx,
       content: div,
@@ -46,37 +41,56 @@ export const View = () => {
   }, [loading]);
 
   const editor = get()!;
-  const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
   useClickAway(() => {
     if (!editor || !tooltipProvider.current) return;
     const service = editor.ctx.get(blockServiceInstance.key);
     service.bind(editor.ctx, (message) => {
-      console.log(message);
-      
       if (message.type === 'hide') {
-        tooltipProvider.current.hide();
+        tooltipProvider.current?.hide();
         // this.#activeNode = null;
       } else if (message.type === 'show') {
-        tooltipProvider.current.show(message.active);
+        tooltipProvider.current?.show(message.active);
         // this.#activeNode = message.active;
       }
     });
-  }, [smbvApi?.ref, ref]);
+    setIsOpen(false);
+  }, [ref, floatingRef]);
 
-  const onClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    var x = e.clientX;
-    var y = e.clientY;
+  const onClick = () => {
     const editor = get();
     if (!editor || !ref.current) return;
-    const smbvApi: any = editor.ctx.get(smBlockViewApi.key);
-    smbvApi.show(x,y);
-    const service = editor.ctx.get(blockServiceInstance.key);
-    service.unBind();
+    setIsOpen(true);
+    editor.ctx.get(blockServiceInstance.key).unBind();
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div ref={ref} className="milkdown-block-handle">
-      <img src={block} alt="block" onClick={onClick} />
-    </div>
+    <>
+      <div
+        ref={(node) => {
+          if (node) {
+            refs.setReference(node);
+            ref.current = node;
+          }
+        }}
+        className="milkdown-block-handle"
+      >
+        <img src={block} alt="block" onClick={onClick} />
+      </div>
+      {isOpen && (
+        <div
+          ref={(node) => {
+            if (node) {
+              refs.setFloating(node);
+              floatingRef.current = node;
+            }
+          }}
+          style={floatingStyles}
+        >
+          <MenuView />
+        </div>
+      )}
+    </>
   );
 };

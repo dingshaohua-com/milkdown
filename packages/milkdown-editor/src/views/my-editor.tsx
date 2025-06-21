@@ -22,7 +22,6 @@ import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider } from '@prosemirror-adapter/react';
 import { EditorConfigProvider, useEditorDefaultConfig } from '../utils/config-ctx';
 import { install as slashMenuSelectionInstall } from '../plugin/slash-menu-selection';
-import { install as slashMenuBlockViewInstall } from '../plugin/slash-menu-block-view';
 
 const MyEditor: React.FC<EditorConfig> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
@@ -59,7 +58,6 @@ const MyEditor: React.FC<EditorConfig> = (props) => {
       .use(gfm) // table 配套
       .use(tableBlock); // table 配套
     blockViewInstall(editor, pluginViewFactory);
-    slashMenuBlockViewInstall(editor, pluginViewFactory);
     slashMenuSelectionInstall(editor, pluginViewFactory);
     return editor;
   });
