@@ -13,7 +13,7 @@ export const tooltip = tooltipFactory('selection');
 //   'smBlockViewApi',
 // );
 
-export const api: any = $ctx(null,'smBlockViewApi');
+// export const api: any = $ctx(null,'smBlockViewApi');
 
 export const install = (editor: any, pluginViewFactory: any) => {
   editor
@@ -28,6 +28,6 @@ export const install = (editor: any, pluginViewFactory: any) => {
         }),
       });
     })
-    .use(api)
+    // .use(api)
     .use(tooltip);
 };

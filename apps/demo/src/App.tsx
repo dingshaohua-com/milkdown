@@ -15,7 +15,7 @@ function App() {
   const [content, setContent] = useState(contentTemp);
 
   const handleChange = (value: string) => {
-    console.log('change', value);
+    // console.log('change', value);
     setContent(value);
   };
 
